@@ -26,6 +26,21 @@ services:
     volumes:
       - pgadmin_data:/root/.pgadmin
 
+  api:
+    image: ${DOCKER_REGISTRY-}api
+    build: 
+      context: .
+      dockerfile: API/Dockerfile
+    container_name: api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=DEVELOPMENT
+      - "ConnectionStrings:DatabaseConnection=Server=postgredb;Port=5432;Database=PostgreDB;User Id=admin;Password=admin1234;"
+      - "TokenKey=super secret key"
+    depends_on:
+      - postgredb
+    ports:
+      - "8001:80"
+
 volumes:
   postgres_data:
   pgadmin_data:
