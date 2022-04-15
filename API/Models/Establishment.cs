@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using API.Models;
 
 namespace API.Models
@@ -10,11 +11,13 @@ namespace API.Models
         public string BankCardNumber { get; set; }
         public double Longitude { get; set; }
         public double Latitude { get; set; }
-        public DateTime StartWorkingTime { get; set; }
-        public DateTime EndWorkingTime { get; set; }
+        public string StartWorkingTime { get; set; }
+        public string EndWorkingTime { get; set; }
         public bool IsOpen { get; set; }
         public string Address { get; set; }
         public int CityId { get; set; }
         public City City { get; set; }
+        public ICollection<EstablishmentProduct> Products { get; set; } = new List<EstablishmentProduct>();
+        public ICollection<EstablishmentService> Services { get; set; } = new List<EstablishmentService>();
     }
 }

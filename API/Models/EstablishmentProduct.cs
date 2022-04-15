@@ -4,7 +4,8 @@ namespace API.Models
     {
         public int Id { get; set; }
         public double Price { get; set; }
-        public int Amount { get; set; }
+        public int Amount { get; set; } 
+        public bool IsPresent { get; set; }
         public int EstablishmentId { get; set; }
         public Establishment Establishment { get; set; }
         public int ProductId { get; set; }
