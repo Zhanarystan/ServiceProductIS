@@ -53,3 +53,5 @@
 /home/zhanarystan/ServiceProductIS/API/bin/Debug/net5.0/Microsoft.EntityFrameworkCore.Design.dll
 /home/zhanarystan/ServiceProductIS/API/bin/Debug/net5.0/Microsoft.EntityFrameworkCore.Relational.Design.dll
 /home/zhanarystan/ServiceProductIS/API/bin/Debug/net5.0/Npgsql.EntityFrameworkCore.PostgreSQL.Design.dll
+/home/zhanarystan/ServiceProductIS/API/bin/Debug/net5.0/AutoMapper.dll
+/home/zhanarystan/ServiceProductIS/API/bin/Debug/net5.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll

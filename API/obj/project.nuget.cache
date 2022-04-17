@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "DglnasTa4t5LZRk4D8qvh57c2gLwMGtcRTsksQJ6HsntN0g6TMlGpj72YtQkMB8ciUdgvfPvGHK5blvR/TTN9g==",
+  "dgSpecHash": "+oPJjQ6qwjzE3YVdII76dIukprhHzqzxnP0OUNzF/NU0K+q9Xgi4DgUGJe+P94MArWYOPcgXM/xsYROqRvpdGA==",
   "success": true,
   "projectFilePath": "/home/zhanarystan/ServiceProductIS/API/API.csproj",
   "expectedPackageFiles": [
+    "/home/zhanarystan/.nuget/packages/automapper/9.0.0/automapper.9.0.0.nupkg.sha512",
+    "/home/zhanarystan/.nuget/packages/automapper.extensions.microsoft.dependencyinjection/7.0.0/automapper.extensions.microsoft.dependencyinjection.7.0.0.nupkg.sha512",
     "/home/zhanarystan/.nuget/packages/fluentvalidation/9.2.0/fluentvalidation.9.2.0.nupkg.sha512",
     "/home/zhanarystan/.nuget/packages/fluentvalidation.aspnetcore/9.2.0/fluentvalidation.aspnetcore.9.2.0.nupkg.sha512",
     "/home/zhanarystan/.nuget/packages/fluentvalidation.dependencyinjectionextensions/9.2.0/fluentvalidation.dependencyinjectionextensions.9.2.0.nupkg.sha512",

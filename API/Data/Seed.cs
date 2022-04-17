@@ -222,6 +222,8 @@ namespace API.Data
                         Manufacturer = manufacturers[4]
                     }
                 };
+                foreach(var product in products)
+                    product.NormalizeNames();
 
                 await context.Products.AddRangeAsync(products);
 

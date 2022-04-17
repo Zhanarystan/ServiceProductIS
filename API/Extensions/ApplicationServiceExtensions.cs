@@ -1,6 +1,9 @@
+using API.Core;
 using API.Data;
 using API.Interfaces;
+using API.Repositories;
 using API.Services;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -36,6 +39,9 @@ namespace API.Extensions
             });
 
             services.AddScoped<IUserAccessor, UserAccessor>();
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IEstablishmentRepository, EstablishmentRepository>();
+            services.AddAutoMapper(typeof(MappingProfiles).Assembly);
             //services.Configure<CloudinarySettings>(config.GetSection("Cloudinary"));
             services.AddSignalR();        
             return services;
