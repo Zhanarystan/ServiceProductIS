@@ -26,7 +26,7 @@ namespace API.Repositories
         {
             Regex rgx = new Regex("[^a-zA-Z0-9А-Яа-яәӘіІңҢғҒүҮұҰқҚөӨһҺ]");
             queryString = rgx.Replace(queryString, "").ToLower();
-            return await _context.Products.Where(p => p.NormalizedName.Contains(queryString))
+            return await _context.Products.Where(p => p.NormalizedName.StartsWith(queryString))
                 .Include(p => p.Metric)
                 .Include(p => p.Manufacturer)
                 .ProjectTo<ProductsDto>(_mapper.ConfigurationProvider)

@@ -23,7 +23,9 @@ namespace API.Repositories
 
         public async Task<EstablishmentDto> GetEstablishment(int id)
         {
-            return await _context.Establishments.Where(e => e.Id == id).ProjectTo<EstablishmentDto>(_mapper.ConfigurationProvider).FirstOrDefaultAsync();
+            return await _context.Establishments.Where(e => e.Id == id)
+                .ProjectTo<EstablishmentDto>(_mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<EstablishmentProductDto>> GetEstablishmentsByProduct(int productId)

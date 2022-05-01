@@ -9,23 +9,23 @@ namespace API.Controllers
 {
     public class EstablishmentController : BaseApiController
     {
-        private readonly IEstablishmentRepository _establishmentRepository;
+        private readonly IEstablishmentService _establishmentService;
         
-        public EstablishmentController(IEstablishmentRepository establishmentRepository)
+        public EstablishmentController(IEstablishmentService establishmentService)
         {
-            _establishmentRepository = establishmentRepository;
+            _establishmentService = establishmentService;
         }
 
         [HttpGet("GetEstablishmentsByProduct")]
-        public async Task<ActionResult<IEnumerable<EstablishmentProduct>>> GetEstablishmentsByProduct(int productId)
+        public async Task<ActionResult<IEnumerable<EstablishmentProduct>>> GetEstablishmentsByProduct(int productId, double lat, double lon)
         {
-            return Ok(await _establishmentRepository.GetEstablishmentsByProduct(productId));
+            return Ok(await _establishmentService.GetEstablishmentsByProduct(productId, lat, lon));
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<EstablishmentDto>> GetEstablishment(int id)
         {
-            return Ok(await _establishmentRepository.GetEstablishment(id));
+            return Ok(await _establishmentService.GetEstablishment(id));
         }
     }
 }

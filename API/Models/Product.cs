@@ -8,8 +8,6 @@ namespace API.Models
         public int Id { get; set; }
         public string BarCode { get; set; }
         public string Name { get; set; }
-        public string KzName { get; set; }
-        public string RuName { get; set; }
         public string NormalizedName { get; set; }
         public bool IsCustom { get; set; }
         public string Description { get; set; }
@@ -19,12 +17,11 @@ namespace API.Models
         public Manufacturer Manufacturer { get; set; }
         public ICollection<EstablishmentProduct> Establishments { get; set; } = new List<EstablishmentProduct>();
 
-        public string NormalizeNames()
+        public string NormalizeName()
         {
-            string names = Name + KzName + RuName;
             Regex rgx = new Regex("[^a-zA-Z0-9А-Яа-яәӘіІңҢғҒүҮұҰқҚөӨһҺ]");
-            NormalizedName = rgx.Replace(names, "").ToLower();
-            return names;
+            NormalizedName = rgx.Replace(Name, "").ToLower();
+            return NormalizedName;
         }
     }
 }

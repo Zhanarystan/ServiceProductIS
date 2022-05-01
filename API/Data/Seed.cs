@@ -93,8 +93,6 @@ namespace API.Data
                     {
                         BarCode = "5449000054227",
                         Name = "Coca-Cola Classic 1L",
-                        KzName = "Кока-Кола классикалық 1Л",
-                        RuName = "Кока-Кола классический 1Л",
                         IsCustom = false,
                         Description = "Coca-Cola Classic 1L",
                         Metric = metrics[0],
@@ -103,9 +101,7 @@ namespace API.Data
                     new Product 
                     {
                         BarCode = "5449000009067",
-                        Name = "Coca-Cola Classic 2L",
-                        KzName = "Кока-Кола классикалық 2Л",
-                        RuName = "Кока-Кола классический 2Л",
+                        Name = "Coca-Cola Classic 2л",
                         IsCustom = false,
                         Description = "Coca-Cola Classic 2Л",
                         Metric = metrics[0],
@@ -114,9 +110,7 @@ namespace API.Data
                     new Product 
                     {
                         BarCode = "5449000004840",
-                        Name = "Fanta 2L",
-                        KzName = "Фанта 2Л",
-                        RuName = "Фанта 2Л",
+                        Name = "Fanta 2л",
                         IsCustom = false,
                         Description = "Fanta 2Л",
                         Metric = metrics[0],
@@ -126,8 +120,6 @@ namespace API.Data
                     {
                         BarCode = "4870085000884",
                         Name = "Настоящий Буратино 0,5Л",
-                        KzName = "Настоящий Буратино 0,5Л",
-                        RuName = "Настоящий Буратино 0,5Л",
                         IsCustom = false,
                         Description = "Настоящий Буратино 0,5Л",
                         Metric = metrics[0],
@@ -137,8 +129,6 @@ namespace API.Data
                     {
                         BarCode = "4870085000907",
                         Name = "Настоящий Буратино 1,5Л",
-                        KzName = "Настоящий Буратино 1,5Л",
-                        RuName = "Настоящий Буратино 1,5Л",
                         IsCustom = false,
                         Description = "Настоящий Буратино 1,5Л",
                         Metric = metrics[0],
@@ -148,8 +138,6 @@ namespace API.Data
                     {
                         BarCode = "4870004903876",
                         Name = "MELONA MANGO",
-                        KzName = "МЕЛОНА МАНГО",
-                        RuName = "МЕЛОНА МАНГО",
                         IsCustom = false,
                         Description = "MELONA MANGO",
                         Metric = metrics[0],
@@ -159,8 +147,6 @@ namespace API.Data
                     {
                         BarCode = "6920238082019",
                         Name = "ЛАПША ШИН РА МЕН 120Г",
-                        KzName = "ШИН РА МЕН КЕСПЕ 120Г",
-                        RuName = "ЛАПША ШИН РА МЕН 120Г",
                         IsCustom = false,
                         Description = "ЛАПША ШИН РА МЕН 120Г",
                         Metric = metrics[0],
@@ -170,8 +156,6 @@ namespace API.Data
                     {
                         BarCode = null,
                         Name = "АЙСҰЛУ ШОК",
-                        KzName = "АЙСҰЛУ ШОК",
-                        RuName = "АЙСУЛУ ШОК",
                         IsCustom = false,
                         Description = "АЙСҰЛУ ШОК",
                         Metric = metrics[1],
@@ -181,8 +165,6 @@ namespace API.Data
                     {
                         BarCode = null,
                         Name = "КӨКТЕМ",
-                        KzName = "КӨКТЕМ",
-                        RuName = "КОКТЕМ",
                         IsCustom = false,
                         Description = "КӨКТЕМ",
                         Metric = metrics[1],
@@ -192,8 +174,6 @@ namespace API.Data
                     {
                         BarCode = null,
                         Name = "СУФЛЕ СО ВКУСОМ ВИШНИ",
-                        KzName = "ШИЕ ДӘМІМЕН СУФЛЕ",
-                        RuName = "СУФЛЕ СО ВКУСОМ ВИШНИ",
                         IsCustom = false,
                         Description = "СУФЛЕ СО ВКУСОМ ВИШНИ",
                         Metric = metrics[1],
@@ -203,8 +183,6 @@ namespace API.Data
                     {
                         BarCode = null,
                         Name = "iPhone 13 128GB Black",
-                        KzName = "Қара iPhone 13 128GB",
-                        RuName = "iPhone 13 128GB Черный",
                         IsCustom = false,
                         Description = "iPhone 13 128GB Black",
                         Metric = metrics[0],
@@ -214,16 +192,15 @@ namespace API.Data
                     {
                         BarCode = null,
                         Name = "Apple MacBook Air Retina M1 / 8GB / 256SSD / 13 / Mac OS Big Sur",
-                        KzName = "Apple MacBook Air Retina M1 / 8ГБ / 256SSD / 13 / Mac OS Big Sur",
-                        RuName = "Apple MacBook Air Retina M1 / 8ГБ / 256SSD / 13 / Mac OS Big Sur",
                         IsCustom = false,
                         Description = "Apple MacBook Air Retina M1 / 8ГБ / 256SSD / 13 / Mac OS Big Sur",
                         Metric = metrics[0],
                         Manufacturer = manufacturers[4]
                     }
                 };
-                foreach(var product in products)
-                    product.NormalizeNames();
+                
+                foreach(var p in products)
+                    p.NormalizeName();
 
                 await context.Products.AddRangeAsync(products);
 

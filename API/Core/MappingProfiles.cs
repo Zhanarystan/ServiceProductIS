@@ -19,17 +19,14 @@ namespace API.Core
                 .ForMember(d => d.Address, o => o.MapFrom(s => s.Establishment.Address))
                 .ForMember(d => d.ProductId, o => o.MapFrom(s => s.ProductId))
                 .ForMember(d => d.ProductName, o => o.MapFrom(s => s.Product.Name))
-                .ForMember(d => d.ProductKzName, o => o.MapFrom(s => s.Product.KzName))
-                .ForMember(d => d.ProductRuName, o => o.MapFrom(s => s.Product.RuName))
                 .ForMember(d => d.Price, o => o.MapFrom(s => s.Price))
+                .ForMember(d => d.Amount, o => o.MapFrom(s => s.Amount))
                 .ForMember(d => d.Metric, o => o.MapFrom(s => s.Product.Metric.Name));
 
             CreateMap<Product, ProductsDto>()
                 .ForMember(d => d.Id, o => o.MapFrom(s => s.Id))
                 .ForMember(d => d.BarCode, o => o.MapFrom(s => s.BarCode))
                 .ForMember(d => d.Name, o => o.MapFrom(s => s.Name))
-                .ForMember(d => d.KzName, o => o.MapFrom(s => s.KzName))
-                .ForMember(d => d.RuName, o => o.MapFrom(s => s.RuName))
                 .ForMember(d => d.IsCustom, o => o.MapFrom(s => s.IsCustom))
                 .ForMember(d => d.Description, o => o.MapFrom(s => s.Description))
                 .ForMember(d => d.Metric, o => o.MapFrom(s => s.Metric.Name))

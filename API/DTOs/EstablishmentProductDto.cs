@@ -15,9 +15,9 @@ namespace API.DTOs
         public string Address { get; set; }
         public int ProductId { get; set; }
         public string ProductName { get; set; }
-        public string ProductKzName { get; set; }
-        public string ProductRuName { get; set; }
         public double Price { get; set; }
+        public int Amount { get; set; }
         public string Metric { get; set; }
+        public double Distance { get; set; }
     }
 }
