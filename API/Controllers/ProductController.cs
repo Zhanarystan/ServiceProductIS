@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using API.DTOs;
 using API.Interfaces;
-using API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,7 +17,7 @@ namespace API.Controllers
         }
 
         [HttpGet("GetProductsByQuery")]
-        public async Task<IEnumerable<ProductsDto>> GetProductsByQuery(string queryString)
+        public async Task<IEnumerable<ProductDto>> GetProductsByQuery(string queryString)
         {
             var products = await _productRepository.GetProductsByNameMatching(queryString);
             return products;

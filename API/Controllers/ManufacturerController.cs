@@ -3,16 +3,15 @@ using System.Threading.Tasks;
 using API.DTOs;
 using API.Interfaces;
 using API.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    public class EstablishmentController : BaseApiController
+    public class ManufacturerController : BaseApiController
     {
         private readonly IEstablishmentService _establishmentService;
         
-        public EstablishmentController(IEstablishmentService establishmentService)
+        public ManufacturerController(IEstablishmentService establishmentService)
         {
             _establishmentService = establishmentService;
         }
@@ -22,8 +21,7 @@ namespace API.Controllers
         {
             return Ok(await _establishmentService.GetEstablishmentsByProduct(productId, lat, lon));
         }
-
-        [Authorize]
+    
         [HttpGet]
         public async Task<ActionResult<EstablishmentListDto>> GetEstablishments()
         {

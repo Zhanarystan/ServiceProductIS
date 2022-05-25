@@ -11,6 +11,7 @@ namespace API.Data
         public static async Task SeedData(DataContext context, UserManager<AppUser> userManager)
         {
             if(!context.Manufacturers.Any() && !context.Products.Any() &&
+                !context.Services.Any() &&
                 !context.Cities.Any() && !context.Establishments.Any() &&
                 !context.EstablishmentProduct.Any())
             {
@@ -73,9 +74,9 @@ namespace API.Data
                 {
                     new Metric 
                     {
-                        Name = "шт",
-                        KzName = "дана",
-                        RuName = "шт"
+                        Name = "тг/шт",
+                        KzName = "тг/дана",
+                        RuName = "тг/шт"
                     },
                     new Metric
                     {
@@ -203,6 +204,18 @@ namespace API.Data
                     p.NormalizeName();
 
                 await context.Products.AddRangeAsync(products);
+
+                var services = new List<Service> 
+                {
+                    new Service
+                    {
+                        Name = "Замена масла",
+                        Description = "Замена масла",
+                        Metric = metrics[0]
+                    }
+                };
+
+                await context.Services.AddRangeAsync(services);
 
                 var cities = new List<City>
                 {
@@ -400,6 +413,17 @@ namespace API.Data
 
                 await context.EstablishmentProduct.AddRangeAsync(establishmentsProducts);
 
+                var establishmentServices = new List<EstablishmentService>
+                {
+                    new EstablishmentService
+                    {
+                        Price = 5000,
+                        IsAvailable = true,
+                        Establishment = establishments[0],
+                        Service = services[0]
+                    }
+                };
+                await context.EstablishmentService.AddRangeAsync(establishmentServices);
                 await context.SaveChangesAsync();
             }
         }

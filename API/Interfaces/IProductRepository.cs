@@ -7,6 +7,6 @@ namespace API.Interfaces
 {
     public interface IProductRepository
     {
-        Task<IEnumerable<ProductsDto>> GetProductsByNameMatching(string queryString);
+        Task<IEnumerable<ProductDto>> GetProductsByNameMatching(string queryString);
     }
 }

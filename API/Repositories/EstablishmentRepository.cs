@@ -15,10 +15,16 @@ namespace API.Repositories
     {
         private readonly DataContext _context;
         private readonly IMapper _mapper;
+        
         public EstablishmentRepository(DataContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
+        }
+
+        public async Task<IEnumerable<EstablishmentListDto>> GetEstablishments()
+        {
+            return await _context.Establishments.ProjectTo<EstablishmentListDto>(_mapper.ConfigurationProvider).ToListAsync();
         }
 
         public async Task<EstablishmentDto> GetEstablishment(int id)
@@ -26,6 +32,12 @@ namespace API.Repositories
             return await _context.Establishments.Where(e => e.Id == id)
                 .ProjectTo<EstablishmentDto>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync();
+        }
+
+        public async Task<bool> CreateEstablishment(Establishment establishment)
+        {
+            _context.Establishments.Add(establishment);
+            return await _context.SaveChangesAsync() > 0;
         }
 
         public async Task<IEnumerable<EstablishmentProductDto>> GetEstablishmentsByProduct(int productId)

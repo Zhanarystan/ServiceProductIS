@@ -2,9 +2,8 @@ using System.Collections.Generic;
 
 namespace API.DTOs
 {
-    public class EstablishmentDto
+    public class EstablishmentCreateDto
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public string BankCardNumber { get; set; }
         public double Longitude { get; set; }
@@ -13,8 +12,6 @@ namespace API.DTOs
         public string EndWorkingTime { get; set; }
         public bool IsOpen { get; set; }
         public string Address { get; set; }
-        public string City { get; set; }
-        public ICollection<EstablishmentProductDto> Products { get; set; } = new List<EstablishmentProductDto>();
-        public ICollection<EstablishmentServiceDto> Services { get; set; } = new List<EstablishmentServiceDto>();
+        public int CityId { get; set; }
    }
 }

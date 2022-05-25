@@ -38,10 +38,15 @@ namespace API.Extensions
                 });
             });
 
+            //Repository register
             services.AddScoped<IUserAccessor, UserAccessor>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IEstablishmentRepository, EstablishmentRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+
+            //Service register
             services.AddScoped<IEstablishmentService, EstablishmentService>();
+            services.AddScoped<IUserService, UserService>();
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
             //services.Configure<CloudinarySettings>(config.GetSection("Cloudinary"));
             services.AddSignalR();        

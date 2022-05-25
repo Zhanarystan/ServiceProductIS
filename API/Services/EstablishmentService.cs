@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using API.DTOs;
 using API.Interfaces;
+using API.Models;
 
 namespace API.Services
 {
@@ -15,11 +16,33 @@ namespace API.Services
             _repository = repository;
         }
         
+        public async Task<IEnumerable<EstablishmentListDto>> GetEstablishments() 
+        {
+            return await _repository.GetEstablishments();
+        }
+
         public async Task<EstablishmentDto> GetEstablishment(int id)
         {
             return await _repository.GetEstablishment(id);
         }
 
+        public async Task<bool> CreateEstablishment(EstablishmentCreateDto establishment)
+        {
+            var newEstablishment = new Establishment
+            {
+                Name = establishment.Name,
+                BankCardNumber = establishment.BankCardNumber,
+                Longitude = establishment.Longitude,
+                Latitude = establishment.Latitude,
+                StartWorkingTime = establishment.StartWorkingTime,
+                EndWorkingTime = establishment.EndWorkingTime,
+                Address = establishment.Address,
+                IsOpen = false,
+                CityId = establishment.CityId
+            };
+
+            return await _repository.CreateEstablishment(newEstablishment);
+        }
         
         public async Task<IEnumerable<EstablishmentProductDto>> GetEstablishmentsByProduct(int productId, double userLat, double userLon)
         {

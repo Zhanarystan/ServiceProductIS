@@ -21,6 +21,7 @@ namespace API.Extensions
             {
                 opt.Password.RequireNonAlphanumeric = false;
             })
+            .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<DataContext>()
             .AddSignInManager<SignInManager<AppUser>>();   
 
@@ -51,9 +52,12 @@ namespace API.Extensions
                         }
                     };
                 });
-
+            
             services.AddAuthorization(opt => 
-            {});
+            {
+                opt.AddPolicy("EstablishmentAdmin",
+                    policy => policy.RequireRole("establishment_admin"));
+            });
 
             services.AddScoped<TokenService>();
             

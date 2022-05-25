@@ -22,14 +22,14 @@ namespace API.Repositories
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<ProductsDto>> GetProductsByNameMatching(string queryString)
+        public async Task<IEnumerable<ProductDto>> GetProductsByNameMatching(string queryString)
         {
             Regex rgx = new Regex("[^a-zA-Z0-9А-Яа-яәӘіІңҢғҒүҮұҰқҚөӨһҺ]");
             queryString = rgx.Replace(queryString, "").ToLower();
             return await _context.Products.Where(p => p.NormalizedName.StartsWith(queryString))
                 .Include(p => p.Metric)
                 .Include(p => p.Manufacturer)
-                .ProjectTo<ProductsDto>(_mapper.ConfigurationProvider)
+                .ProjectTo<ProductDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
         }
     }

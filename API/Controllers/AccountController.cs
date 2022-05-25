@@ -7,6 +7,7 @@ using API.DTOs;
 using API.Models;
 using API.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -21,24 +22,28 @@ namespace API.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly TokenService _tokenService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         public AccountController(UserManager<AppUser> userManager,
-            SignInManager<AppUser> signInManager, TokenService tokeService)
+            SignInManager<AppUser> signInManager, TokenService tokeService,
+            RoleManager<IdentityRole> roleManager,
+            IHttpContextAccessor httpContextAccessor)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _tokenService = tokeService;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
-            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Email == loginDto.Email);
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == loginDto.Username);
 
             if(user == null) return Unauthorized();
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
 
-            if(result.Succeeded) return CreateUserObject(user);
+            if(result.Succeeded) return await CreateUserObject(user);
 
             return Unauthorized();
         }
@@ -66,7 +71,7 @@ namespace API.Controllers
 
             var result = await _userManager.CreateAsync(user, registerDto.Password);
 
-            if(result.Succeeded) return CreateUserObject(user);
+            if(result.Succeeded) return await CreateUserObject(user);
 
             return BadRequest("Problem registering user");
         }
@@ -75,17 +80,21 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<UserDto>> GetCurrentUser()
         {
-            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Email == User.FindFirstValue(ClaimTypes.Email));
-
-            return CreateUserObject(user);
+            var user = await _userManager.Users
+                .FirstOrDefaultAsync(x => x.UserName == _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Name));
+            var userDto = await CreateUserObject(user);
+            return await CreateUserObject(user);
         }
 
-        private UserDto CreateUserObject(AppUser user)
+        private async Task<UserDto> CreateUserObject(AppUser user)
         {
+            var roles = await _userManager.GetRolesAsync(user);
             return new UserDto
             {
-                Token = _tokenService.CreateToken(user),
-                Username = user.UserName
+                Token = await _tokenService.CreateToken(user),
+                Username = user.UserName,
+                EstablishmentId = user.EstablishmentId,
+                Roles = roles
             };
         }
     }
