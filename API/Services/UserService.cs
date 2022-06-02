@@ -29,7 +29,7 @@ namespace API.Services
             _modelErrors = new List<string>();
         }
 
-        public async Task<IEnumerable<AppUserDto>> GetUsersAtEstablishment()
+        public async Task<Result<IEnumerable<AppUserDto>>> GetUsersAtEstablishment()
         {
             var currentUser = await _userManager.Users
                 .FirstOrDefaultAsync(x => x.UserName == _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Name));
@@ -50,7 +50,7 @@ namespace API.Services
                     }
                 );
             } 
-            return usersDto;
+            return Result<IEnumerable<AppUserDto>>.Success(usersDto);
         }
 
         public async Task<Result<AppUserDto>> GetUser(string id)

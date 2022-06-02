@@ -9,7 +9,7 @@ namespace API.Interfaces
 {
     public interface IUserService
     {
-        Task<IEnumerable<AppUserDto>> GetUsersAtEstablishment();
+        Task<Result<IEnumerable<AppUserDto>>> GetUsersAtEstablishment();
         Task<AppUserDto> GetUser(string id);
         Task<Result<RegisterDto>> CreateUser(RegisterDto user);
     }

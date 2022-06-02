@@ -14,6 +14,7 @@ namespace API.DTOs
         public bool IsOpen { get; set; }
         public string Address { get; set; }
         public string City { get; set; }
+        public string PhotoUrl { get; set; }
         public ICollection<EstablishmentProductDto> Products { get; set; } = new List<EstablishmentProductDto>();
         public ICollection<EstablishmentServiceDto> Services { get; set; } = new List<EstablishmentServiceDto>();
    }

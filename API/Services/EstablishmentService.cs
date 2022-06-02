@@ -4,16 +4,23 @@ using System.Linq;
 using System.Threading.Tasks;
 using API.DTOs;
 using API.Interfaces;
+using API.Core;
 using API.Models;
+using API.Photos;
+using Microsoft.AspNetCore.Http;
 
 namespace API.Services
 {
     public class EstablishmentService : IEstablishmentService
     {
         private readonly IEstablishmentRepository _repository;
-        public EstablishmentService(IEstablishmentRepository repository)
+        private readonly IPhotoAccessor _photoAccessor;
+        private readonly IList<string> _modelErrors;
+        public EstablishmentService(IEstablishmentRepository repository, IPhotoAccessor photoAccessor)
         {
             _repository = repository;
+            _photoAccessor = photoAccessor;
+            _modelErrors = new List<string>();
         }
         
         public async Task<IEnumerable<EstablishmentListDto>> GetEstablishments() 
@@ -23,7 +30,7 @@ namespace API.Services
 
         public async Task<EstablishmentDto> GetEstablishment(int id)
         {
-            return await _repository.GetEstablishment(id);
+            return await _repository.GetEstablishmentDto(id);
         }
 
         public async Task<bool> CreateEstablishment(EstablishmentCreateDto establishment)
@@ -44,7 +51,7 @@ namespace API.Services
             return await _repository.CreateEstablishment(newEstablishment);
         }
         
-        public async Task<IEnumerable<EstablishmentProductDto>> GetEstablishmentsByProduct(int productId, double userLat, double userLon)
+        public async Task<Result<IEnumerable<EstablishmentProductDto>>> GetEstablishmentsByProduct(int productId, double userLat, double userLon)
         {
             var establishments = await _repository.GetEstablishmentsByProduct(productId);
             List<EstablishmentProductDto> establishmentsList = new List<EstablishmentProductDto>();
@@ -54,7 +61,83 @@ namespace API.Services
                 establishmentsList.Add(es);
             }
 
-            return establishmentsList.OrderBy(es => es.Distance).ToList();
+            return Result<IEnumerable<EstablishmentProductDto>>.Success(establishmentsList.OrderBy(es => es.Distance).ToList());
+        }
+
+        public async Task<Result<IEnumerable<EstablishmentServiceDto>>> GetEstablishmentsByService(int serviceId, double userLat, double userLon)
+        {
+            var establishments = await _repository.GetEstablishmentsByService(serviceId);
+            List<EstablishmentServiceDto> establishmentsList = new List<EstablishmentServiceDto>();
+            foreach(var es in establishments)
+            {
+                es.Distance = DistanceTo(es.Latitude, es.Longitude, userLat, userLon);
+                establishmentsList.Add(es);
+            }
+
+            return Result<IEnumerable<EstablishmentServiceDto>>.Success(establishmentsList.OrderBy(es => es.Distance).ToList());
+        }
+
+        public async Task<Result<EstablishmentProductDto>> UpdateProduct(EstablishmentProductDto productDto)
+        {
+            var product = await _repository.GetEstablishmentProductByIdentifier(productDto.ProductId, productDto.EstablishmentId);
+            product.Price = productDto.Price;
+            product.Amount = productDto.Amount;
+            if(! await _repository.UpdateProduct(product))
+                return Result<EstablishmentProductDto>.Failure(new List<string>() {"Продукт по id: " + productDto.ProductId + " не обновлено!"});
+            return Result<EstablishmentProductDto>.Success(productDto);
+        }
+
+        public async Task<Result<EstablishmentDto>> UpdatePhoto(int establishmentId, IFormFile file)
+        {
+            var establishment = await _repository.GetEstablishment(establishmentId);
+
+            string deletionConfirmation = "ok";
+            if(establishment.PhotoPublicId != null || establishment.PhotoUrl != null )
+                deletionConfirmation = await _photoAccessor.DeletePhoto(establishment.PhotoPublicId);
+            
+            if(deletionConfirmation == null)
+                return Result<EstablishmentDto>.Failure(new List<string>() {"Фото заведении не изменено!"});
+            
+            var photoUploadResult = await _photoAccessor.AddPhoto(file);
+            establishment.PhotoPublicId = photoUploadResult.PublicId;
+            establishment.PhotoUrl = photoUploadResult.Url;
+
+            if(! await _repository.UpdateEstablishment(establishment))
+                return Result<EstablishmentDto>.Failure(new List<string>() {"Фото заведении не изменено!"});
+
+            var establishmentDto = await _repository.GetEstablishmentDto(establishmentId);
+            establishmentDto.PhotoUrl = establishment.PhotoUrl;
+
+            return Result<EstablishmentDto>.Success(establishmentDto);
+        }
+
+        public async Task<Result<EstablishmentCreateDto>> UpdateEstablishment(int id, EstablishmentCreateDto dto)
+        {
+            var establishment = await _repository.GetEstablishment(id);
+            if(!ValidateEstablishment(dto))
+                return Result<EstablishmentCreateDto>.Failure(_modelErrors);
+            establishment.Name = dto.Name;
+            establishment.BankCardNumber = dto.BankCardNumber;
+            establishment.Longitude = dto.Longitude;
+            establishment.Latitude = dto.Latitude;
+            establishment.StartWorkingTime = dto.StartWorkingTime;
+            establishment.EndWorkingTime = dto.EndWorkingTime;
+            establishment.Address = dto.Address;
+
+            if(! await _repository.UpdateEstablishment(establishment))
+                return Result<EstablishmentCreateDto>.Failure(new List<string>() {"Заведение не изменено!"});
+            return Result<EstablishmentCreateDto>.Success(dto);
+        }
+
+        public bool ValidateEstablishment(EstablishmentCreateDto dto) 
+        {
+            if(String.IsNullOrEmpty(dto.Name))
+                _modelErrors.Add("Наименование заведении не должно быть пустым");
+            if(String.IsNullOrEmpty(dto.BankCardNumber))
+                _modelErrors.Add("Номер банковской карты должно быть пустым");
+            if(dto.BankCardNumber.Length != 16 || !dto.BankCardNumber.All(Char.IsDigit))
+                _modelErrors.Add("Номер банковской карты должeн содержать 16 цифр");
+            return _modelErrors.Count == 0;
         }
 
         private double DistanceTo(double lat1, double lon1, double lat2, double lon2) 

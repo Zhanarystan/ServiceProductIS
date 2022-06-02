@@ -3,7 +3,9 @@ using System.Threading.Tasks;
 using API.DTOs;
 using API.Interfaces;
 using API.Models;
+using API.Core;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -17,10 +19,18 @@ namespace API.Controllers
             _establishmentService = establishmentService;
         }
 
+        [AllowAnonymous]
         [HttpGet("GetEstablishmentsByProduct")]
         public async Task<ActionResult<IEnumerable<EstablishmentProduct>>> GetEstablishmentsByProduct(int productId, double lat, double lon)
         {
-            return Ok(await _establishmentService.GetEstablishmentsByProduct(productId, lat, lon));
+            return HandleResult(await _establishmentService.GetEstablishmentsByProduct(productId, lat, lon));
+        }
+
+        [AllowAnonymous]
+        [HttpGet("GetEstablishmentsByService")]
+        public async Task<ActionResult<IEnumerable<EstablishmentService>>> GetEstablishmentsByService(int serviceId, double lat, double lon)
+        {
+            return HandleResult(await _establishmentService.GetEstablishmentsByService(serviceId, lat, lon));
         }
 
         [Authorize]
@@ -36,10 +46,30 @@ namespace API.Controllers
             return Ok(await _establishmentService.CreateEstablishment(establishment));
         }
 
+        [HttpPut("updateProduct")]
+        public async Task<ActionResult<Result<EstablishmentDto>>> UpdateProduct(EstablishmentProductDto productDto) 
+        {
+            return HandleResult(await _establishmentService.UpdateProduct(productDto));
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<EstablishmentDto>> GetEstablishment(int id)
         {
             return Ok(await _establishmentService.GetEstablishment(id));
+        }
+
+        [HttpPost("uploadPhoto/{id}")]
+        [Authorize(Roles = "establishment_admin")]
+        public async Task<ActionResult<EstablishmentDto>> UploadPhoto(int id, IFormFile file)
+        {
+            return HandleResult(await _establishmentService.UpdatePhoto(id, file));
+        }
+
+        [HttpPut("{id}")]
+        [Authorize(Roles = "establishment_admin, system_admin")]
+        public async Task<ActionResult<EstablishmentCreateDto>> UpdateEstablishment(int id, EstablishmentCreateDto establishment) 
+        {
+            return HandleResult(await _establishmentService.UpdateEstablishment(id, establishment));
         }
     }
 }

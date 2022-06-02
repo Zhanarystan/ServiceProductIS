@@ -21,7 +21,8 @@ namespace API.Core
                 .ForMember(d => d.ProductName, o => o.MapFrom(s => s.Product.Name))
                 .ForMember(d => d.Price, o => o.MapFrom(s => s.Price))
                 .ForMember(d => d.Amount, o => o.MapFrom(s => s.Amount))
-                .ForMember(d => d.Metric, o => o.MapFrom(s => s.Product.Metric.Name));
+                .ForMember(d => d.Metric, o => o.MapFrom(s => s.Product.Metric.Name))
+                .ForMember(d => d.ProductBarCode, o => o.MapFrom(s => s.Product.BarCode));
 
             CreateMap<EstablishmentService, EstablishmentServiceDto>()
                 .ForMember(d => d.Id, o => o.MapFrom(s => s.Id))
@@ -51,7 +52,7 @@ namespace API.Core
                 .ForMember(d => d.Id, o => o.MapFrom(s => s.Id))
                 .ForMember(d => d.Name, o => o.MapFrom(s => s.Name))
                 .ForMember(d => d.Description, o => o.MapFrom(s => s.Description))
-                .ForMember(d => d.Metric, o => o.MapFrom(s => s.Metric));
+                .ForMember(d => d.Metric, o => o.MapFrom(s => s.Metric.Name));
 
             CreateMap<Establishment, EstablishmentDto>()
                 .ForMember(d => d.Id, o => o.MapFrom(s => s.Id))
@@ -64,6 +65,7 @@ namespace API.Core
                 .ForMember(d => d.IsOpen, o => o.MapFrom(s => s.IsOpen))
                 .ForMember(d => d.Address, o => o.MapFrom(s => s.Address))
                 .ForMember(d => d.City, o => o.MapFrom(s => s.City.Name))
+                .ForMember(d => d.PhotoUrl, o => o.MapFrom(s => s.PhotoUrl))
                 .ForMember(d => d.Products, o => o.MapFrom(s => s.Products))
                 .ForMember(d => d.Services, o => o.MapFrom(s => s.Services));
 

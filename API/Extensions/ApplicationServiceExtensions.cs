@@ -3,6 +3,8 @@ using API.Data;
 using API.Interfaces;
 using API.Repositories;
 using API.Services;
+using API.Infrastructure;
+using API.Photos;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -40,7 +42,9 @@ namespace API.Extensions
 
             //Repository register
             services.AddScoped<IUserAccessor, UserAccessor>();
+            services.AddScoped<IPhotoAccessor, PhotoAccessor>();
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IServiceRepository, ServiceRepository>();
             services.AddScoped<IEstablishmentRepository, EstablishmentRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
 
@@ -48,7 +52,7 @@ namespace API.Extensions
             services.AddScoped<IEstablishmentService, EstablishmentService>();
             services.AddScoped<IUserService, UserService>();
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
-            //services.Configure<CloudinarySettings>(config.GetSection("Cloudinary"));
+            services.Configure<CloudinarySettings>(config.GetSection("Cloudinary"));
             services.AddSignalR();        
             return services;
         }

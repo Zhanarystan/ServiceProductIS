@@ -197,7 +197,16 @@ namespace API.Data
                         Description = "Apple MacBook Air Retina M1 / 8ГБ / 256SSD / 13 / Mac OS Big Sur",
                         Metric = metrics[0],
                         Manufacturer = manufacturers[4]
-                    }
+                    },
+                    new Product 
+                    {
+                        BarCode = null,
+                        Name = "iPhone 11 128GB Black б/у",
+                        IsCustom = false,
+                        Description = "iPhone 11 128GB Black",
+                        Metric = metrics[0],
+                        Manufacturer = manufacturers[4]
+                    },
                 };
                 
                 foreach(var p in products)
@@ -212,8 +221,23 @@ namespace API.Data
                         Name = "Замена масла",
                         Description = "Замена масла",
                         Metric = metrics[0]
+                    },
+                    new Service
+                    {
+                        Name = "Замена дисплея IPhone(оригинал)",
+                        Description = "Замена дисплея IPhone",
+                        Metric = metrics[0]
+                    },
+                    new Service
+                    {
+                        Name = "Замена дисплея IPhone(китайский)",
+                        Description = "Замена дисплея IPhone",
+                        Metric = metrics[0]
                     }
                 };
+                
+                foreach(var s in services)
+                    s.NormalizeName();
 
                 await context.Services.AddRangeAsync(services);
 
@@ -274,7 +298,43 @@ namespace API.Data
                         IsOpen = false,
                         Address = "улица Жандосова, 34А",
                         City = cities[0]
-                    }
+                    },
+                    new Establishment
+                    {
+                        Name = "КОЖ-МАСТЕР",
+                        BankCardNumber = "4568693120321152",
+                        Longitude = 76.956056,
+                        Latitude = 43.245477,
+                        StartWorkingTime = "09:00",
+                        EndWorkingTime = "20:00",
+                        IsOpen = false,
+                        Address = "улица Курмангазы, 11",
+                        City = cities[0]
+                    },
+                    new Establishment
+                    {
+                        Name = "Студент",
+                        BankCardNumber = "4563020315856333",
+                        Longitude = 76.908976,
+                        Latitude = 43.225044,
+                        StartWorkingTime = "09:00",
+                        EndWorkingTime = "22:00",
+                        IsOpen = false,
+                        Address = "улица Тимирязева, 42к3",
+                        City = cities[0]
+                    },
+                    new Establishment
+                    {
+                        Name = "Iron",
+                        BankCardNumber = "4568693120386152",
+                        Longitude = 76.906721,
+                        Latitude = 43.229958,
+                        StartWorkingTime = "09:00",
+                        EndWorkingTime = "18:00",
+                        IsOpen = false,
+                        Address = "улица Ауэзова, 122Б",
+                        City = cities[0]
+                    },
                 };
 
                 await context.Establishments.AddRangeAsync(establishments);
@@ -408,6 +468,14 @@ namespace API.Data
                         IsPresent = true,
                         Establishment = establishments[0],
                         Product = products[9]
+                    },
+                    new EstablishmentProduct
+                    {
+                        Price = 180000,
+                        Amount = 1,
+                        IsPresent = true,
+                        Establishment = establishments[4],
+                        Product = products[12]
                     }
                 };
 
@@ -419,9 +487,23 @@ namespace API.Data
                     {
                         Price = 5000,
                         IsAvailable = true,
-                        Establishment = establishments[0],
+                        Establishment = establishments[5],
                         Service = services[0]
-                    }
+                    },
+                    new EstablishmentService
+                    {
+                        Price = 55000,
+                        IsAvailable = true,
+                        Establishment = establishments[4],
+                        Service = services[1]
+                    },
+                    new EstablishmentService
+                    {
+                        Price = 35000,
+                        IsAvailable = true,
+                        Establishment = establishments[4],
+                        Service = services[2]
+                    },
                 };
                 await context.EstablishmentService.AddRangeAsync(establishmentServices);
                 await context.SaveChangesAsync();

@@ -19,5 +19,6 @@ namespace API.DTOs
         public int Amount { get; set; }
         public string Metric { get; set; }
         public double Distance { get; set; }
+        public string ProductBarCode { get; set; }
     }
 }

@@ -27,11 +27,16 @@ namespace API.Repositories
             return await _context.Establishments.ProjectTo<EstablishmentListDto>(_mapper.ConfigurationProvider).ToListAsync();
         }
 
-        public async Task<EstablishmentDto> GetEstablishment(int id)
+        public async Task<EstablishmentDto> GetEstablishmentDto(int id)
         {
             return await _context.Establishments.Where(e => e.Id == id)
                 .ProjectTo<EstablishmentDto>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync();
+        }
+
+        public async Task<Establishment> GetEstablishment(int id)
+        {
+            return await _context.Establishments.Where(e => e.Id == id).FirstOrDefaultAsync();
         }
 
         public async Task<bool> CreateEstablishment(Establishment establishment)
@@ -47,6 +52,34 @@ namespace API.Repositories
                     .Include(ep => ep.Establishment)
                     .ProjectTo<EstablishmentProductDto>(_mapper.ConfigurationProvider)
                     .ToListAsync();
+        }
+
+        public async Task<IEnumerable<EstablishmentServiceDto>> GetEstablishmentsByService(int serviceId)
+        {
+            return await _context.EstablishmentService
+                .Where(es => es.ServiceId == serviceId)
+                .Include(es => es.Establishment)
+                .ProjectTo<EstablishmentServiceDto>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+        }
+        
+        public async Task<EstablishmentProduct> GetEstablishmentProductByIdentifier(int productId, int establishmentId)
+        {
+            return await _context.EstablishmentProduct
+                .Where(ep => ep.ProductId == productId && ep.EstablishmentId == establishmentId)
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<bool> UpdateProduct(EstablishmentProduct product)
+        {
+            _context.EstablishmentProduct.Update(product);
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<bool> UpdateEstablishment(Establishment establishment)
+        {
+            _context.Establishments.Update(establishment);
+            return await _context.SaveChangesAsync() > 0;
         }
     }
 }

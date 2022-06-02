@@ -8,8 +8,13 @@ namespace API.Interfaces
     public interface IEstablishmentRepository
     {
         Task<IEnumerable<EstablishmentListDto>> GetEstablishments();
-        Task<EstablishmentDto> GetEstablishment(int id);
+        Task<EstablishmentDto> GetEstablishmentDto(int id);
+        Task<Establishment> GetEstablishment(int id);
         Task<bool> CreateEstablishment(Establishment establishment);
         Task<IEnumerable<EstablishmentProductDto>> GetEstablishmentsByProduct(int productId); 
+        Task<IEnumerable<EstablishmentServiceDto>> GetEstablishmentsByService(int serviceId);
+        Task<EstablishmentProduct> GetEstablishmentProductByIdentifier(int productId, int establishmentId);
+        Task<bool> UpdateEstablishment(Establishment establishment);
+        Task<bool> UpdateProduct(EstablishmentProduct product);
     }
 }
