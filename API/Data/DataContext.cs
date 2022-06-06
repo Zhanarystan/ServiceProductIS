@@ -18,8 +18,10 @@ namespace API.Data
         public DbSet<EstablishmentProduct> EstablishmentProduct { get; set; }
         public DbSet<EstablishmentService> EstablishmentService { get; set; }
         public DbSet<Metric> Metrics { get; set; }
+        public DbSet<Estimate> Estimates { get; set; }
         public DbSet<EstimateProduct> EstimateProduct { get; set; }
         public DbSet<EstimateService> EstimateService { get; set; }
+        
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -70,13 +72,23 @@ namespace API.Data
             
             builder.Entity<EstimateProduct>()
                 .HasOne(u => u.Estimate)
-                .WithMany(a => a.Product)
-                .HasForeignKey(ep => ep.ProductId);
+                .WithMany(a => a.Products)
+                .HasForeignKey(ep => ep.EstimateId);
 
             builder.Entity<EstimateService>()
                 .HasOne(u => u.Estimate)
-                .WithMany(a => a.Service)
-                .HasForeignKey(ep => ep.ServiceId);
+                .WithMany(a => a.Services)
+                .HasForeignKey(ep => ep.EstimateId);
+            
+            builder.Entity<Estimate>() 
+                .HasOne(u => u.Establishment)
+                .WithMany(a => a.Estimates)
+                .HasForeignKey(e => e.EstablishmentId);
+
+            builder.Entity<Estimate>() 
+                .HasOne(u => u.CreatedBy)
+                .WithMany(a => a.Estimates)
+                .HasForeignKey(e => e.CreatedById);
         }
     }
 }

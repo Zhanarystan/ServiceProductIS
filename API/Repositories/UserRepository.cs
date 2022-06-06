@@ -36,6 +36,11 @@ namespace API.Repositories
             return await _context.Users.Where(u => u.EstablishmentId == id).ToListAsync();
         }
 
+        public async Task<IEnumerable<AppUser>> GetUsers()
+        {
+            return await _context.Users.ToListAsync();
+        }
+
         public Task<bool> UpdateUser()
         {
             throw new NotImplementedException();

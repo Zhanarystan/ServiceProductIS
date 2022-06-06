@@ -13,8 +13,8 @@ namespace API.Interfaces
         Task<bool> CreateEstablishment(Establishment establishment);
         Task<IEnumerable<EstablishmentProductDto>> GetEstablishmentsByProduct(int productId); 
         Task<IEnumerable<EstablishmentServiceDto>> GetEstablishmentsByService(int serviceId);
-        Task<EstablishmentProduct> GetEstablishmentProductByIdentifier(int productId, int establishmentId);
         Task<bool> UpdateEstablishment(Establishment establishment);
         Task<bool> UpdateProduct(EstablishmentProduct product);
+        Task<EstablishmentProduct> GetEstablishmentProduct(int productId, int establishmentId);
     }
 }

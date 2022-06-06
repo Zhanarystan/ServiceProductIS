@@ -21,5 +21,8 @@ namespace API.Models
         public string PhotoUrl { get; set; }     
         public ICollection<EstablishmentProduct> Products { get; set; } = new List<EstablishmentProduct>();
         public ICollection<EstablishmentService> Services { get; set; } = new List<EstablishmentService>();
+        public ICollection<Estimate> Estimates { get; set; }
+        
+        
     }
 }

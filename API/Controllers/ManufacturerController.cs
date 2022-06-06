@@ -4,40 +4,25 @@ using API.DTOs;
 using API.Interfaces;
 using API.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
+    [AllowAnonymous]
     public class ManufacturerController : BaseApiController
     {
-        private readonly IEstablishmentService _establishmentService;
+        private readonly IManufacturerService _manufacturerService;
         
-        public ManufacturerController(IEstablishmentService establishmentService)
+        public ManufacturerController(IManufacturerService manufacturerService)
         {
-            _establishmentService = establishmentService;
+            _manufacturerService = manufacturerService;
         }
 
-        [HttpGet("GetEstablishmentsByProduct")]
-        public async Task<ActionResult<IEnumerable<EstablishmentProduct>>> GetEstablishmentsByProduct(int productId, double lat, double lon)
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Manufacturer>>> GetManufacturers()
         {
-            return Ok(await _establishmentService.GetEstablishmentsByProduct(productId, lat, lon));
+            return HandleResult(await _manufacturerService.GetManufacturers());
         }
     
-        [HttpGet]
-        public async Task<ActionResult<EstablishmentListDto>> GetEstablishments()
-        {
-            return Ok(await _establishmentService.GetEstablishments());
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> CreateEstablishment(EstablishmentCreateDto establishment)
-        {
-            return Ok(await _establishmentService.CreateEstablishment(establishment));
-        }
-
-        [HttpGet("{id}")]
-        public async Task<ActionResult<EstablishmentDto>> GetEstablishment(int id)
-        {
-            return Ok(await _establishmentService.GetEstablishment(id));
-        }
     }
 }

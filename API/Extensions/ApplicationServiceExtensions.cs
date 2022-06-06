@@ -47,10 +47,18 @@ namespace API.Extensions
             services.AddScoped<IServiceRepository, ServiceRepository>();
             services.AddScoped<IEstablishmentRepository, EstablishmentRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IEstimateRepository, EstimateRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IManufacturerRepository, ManufacturerRepository>();
+            services.AddScoped<IMetricRepository, MetricRepository>();
 
             //Service register
             services.AddScoped<IEstablishmentService, EstablishmentService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IEstimateService, EstimateService>();
+            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IManufacturerService, ManufacturerService>();
+
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
             services.Configure<CloudinarySettings>(config.GetSection("Cloudinary"));
             services.AddSignalR();        

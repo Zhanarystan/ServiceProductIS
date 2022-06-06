@@ -62,8 +62,8 @@ namespace API.Repositories
                 .ProjectTo<EstablishmentServiceDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
         }
-        
-        public async Task<EstablishmentProduct> GetEstablishmentProductByIdentifier(int productId, int establishmentId)
+
+        public async Task<EstablishmentProduct> GetEstablishmentProduct(int productId, int establishmentId)
         {
             return await _context.EstablishmentProduct
                 .Where(ep => ep.ProductId == productId && ep.EstablishmentId == establishmentId)

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 
 namespace API.Models
@@ -10,5 +11,6 @@ namespace API.Models
         public int? EstablishmentId { get; set; }
         public string IIN { get; set; }
         public DateTime Birthdate { get; set; }
+        public ICollection<Estimate> Estimates { get; set; }    
     }
 }

@@ -12,6 +12,6 @@ namespace API.Interfaces
         Task<AppUser> GetUser(string id);
         Task<bool> CreateUser(RegisterDto user);
         Task<bool> UpdateUser();
-
+        Task<IEnumerable<AppUser>> GetUsers();
     }
 }

@@ -18,6 +18,13 @@ namespace API.Controllers
         {
             _userService = userService;
         }
+        
+        [HttpGet]
+        [Authorize(Roles = "system_admin")]
+        public async Task<ActionResult<IEnumerable<AppUserDto>>> GetUsers()
+        {
+            return HandleResult(await _userService.GetUsers());
+        }
 
         [HttpGet("usersAtEstablishment")]
         [Authorize(Roles = "establishment_admin")]

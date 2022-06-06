@@ -22,6 +22,15 @@ namespace API.Repositories
             _mapper = mapper;
         }
 
+        public async Task<IEnumerable<ProductDto>> GetProducts()
+        {
+            return await _context.Products
+                .AsQueryable()
+                .ProjectTo<ProductDto>(_mapper.ConfigurationProvider)
+                .OrderBy(p => p.Name)
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<ProductDto>> GetProductsByNameMatching(string queryString)
         {
             Regex rgx = new Regex("[^a-zA-Z0-9А-Яа-яәӘіІңҢғҒүҮұҰқҚөӨһҺ]");
@@ -31,6 +40,30 @@ namespace API.Repositories
                 .Include(p => p.Manufacturer)
                 .ProjectTo<ProductDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
+        }
+
+        public async Task<Product> CreateProduct(Product product)
+        {
+            await _context.Products.AddAsync(product);
+            await _context.SaveChangesAsync();
+            return product;
+        }
+
+        public async Task<Product> GetProduct(int id)
+        {
+            return await _context.Products.Where(p => p.Id == id).FirstOrDefaultAsync();
+        }
+
+        public async Task<Product> UpdateProduct(Product product)
+        {
+            _context.Products.Update(product);
+            await _context.SaveChangesAsync();
+            return product;
+        }
+
+        public async Task<int> RemoveProduct(int id)
+        {
+            _context.Product.Remove()
         }
     }
 }

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using API.DTOs;
 using API.Interfaces;
+using API.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,9 +12,43 @@ namespace API.Controllers
     public class ProductController : BaseApiController
     {
         private readonly IProductRepository _productRepository;
-        public ProductController(IProductRepository productRepository)
+        private readonly IProductService _productService;
+        public ProductController(IProductRepository productRepository, IProductService productService)
         {
             _productRepository = productRepository;
+            _productService = productService;
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "system_admin")]
+        public async Task<ActionResult<IEnumerable<ProductDto>>> GetProducts()
+        {
+            return HandleResult(await _productService.GetProducts());
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "system_admin")]
+        public async Task<ActionResult<Result<ProductCreateDto>>> CreateProduct(ProductCreateDto dto)
+        {
+            return HandleResult(await _productService.CreateProduct(dto));
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Result<ProductDto>>> GetProduct(int id)
+        {
+            return HandleResult(await _productService.GetProduct(id));
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Result<ProductDto>>> UpdateProduct(int id, ProductDto dto)
+        {  
+            return HandleResult(await _productService.UpdateProduct(id, dto));
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Result<int>>> DeleteProduct(int id)
+        {
+            return HandleResult(await _productService.RemoveProduct(id));
         }
 
         [HttpGet("GetProductsByQuery")]

@@ -79,7 +79,7 @@ namespace API.Services
 
         public async Task<Result<EstablishmentProductDto>> UpdateProduct(EstablishmentProductDto productDto)
         {
-            var product = await _repository.GetEstablishmentProductByIdentifier(productDto.ProductId, productDto.EstablishmentId);
+            var product = await _repository.GetEstablishmentProduct(productDto.ProductId, productDto.EstablishmentId);
             product.Price = productDto.Price;
             product.Amount = productDto.Amount;
             if(! await _repository.UpdateProduct(product))

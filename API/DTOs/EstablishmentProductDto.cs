@@ -16,7 +16,7 @@ namespace API.DTOs
         public int ProductId { get; set; }
         public string ProductName { get; set; }
         public double Price { get; set; }
-        public int Amount { get; set; }
+        public double Amount { get; set; }
         public string Metric { get; set; }
         public double Distance { get; set; }
         public string ProductBarCode { get; set; }

@@ -1,14 +1,13 @@
-namespace API.Models
+namespace API.DTOs
 {
-    public class EstimateService
+    public class EstimateServiceDto 
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public double Price { get; set; }
         public double Amount { get; set; }
         public double TotalSum { get; set; }
         public int ServiceId { get; set; }
-        public Service Service { get; set; }
+        public string ServiceName { get; set; }
         public int EstimateId { get; set; }
-        public Estimate Estimate { get; set; }
     }
 }

@@ -10,20 +10,20 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    public class EstablishmentController : BaseApiController
+    public class EstimateController : BaseApiController
     {
-        private readonly IEstablishmentService _establishmentService;
+        private readonly IEstimateService _estimateService;
         
-        public EstablishmentController(IEstablishmentService establishmentService)
+        public EstimateController(IEstimateService estimateService)
         {
-            _establishmentService = establishmentService;
+            _estimateService = estimateService;
         }
 
         [Authorize(Roles = "establishment_admin, establishment_seller")] 
         [HttpPost]
-        public async Task<ActionResult<IEnumerable<EstablishmentProduct>>> GetEstablishmentsByProduct(int productId, double lat, double lon)
+        public async Task<ActionResult<IEnumerable<EstablishmentProduct>>> CreateEstimate(EstimateCreateDto dto)
         {
-            return HandleResult(await _establishmentService.GetEstablishmentsByProduct(productId, lat, lon));
+            return HandleResult(await _estimateService.CreateEstimate(dto));
         }
     }
 }

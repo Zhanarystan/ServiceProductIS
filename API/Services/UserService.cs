@@ -18,14 +18,17 @@ namespace API.Services
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IUserRepository _userRepository;
+        private readonly IEstablishmentRepository _establishmentRepository;
         private readonly UserManager<AppUser> _userManager;
         private readonly IList<string> _modelErrors;
+
         public UserService(IHttpContextAccessor httpContextAccessor, IUserRepository userRepository, 
-            UserManager<AppUser> userManager)
+            UserManager<AppUser> userManager, IEstablishmentRepository establishmentRepository)
         {
             _httpContextAccessor = httpContextAccessor;
             _userRepository = userRepository;
             _userManager = userManager;
+            _establishmentRepository = establishmentRepository;
             _modelErrors = new List<string>();
         }
 
@@ -34,7 +37,7 @@ namespace API.Services
             var currentUser = await _userManager.Users
                 .FirstOrDefaultAsync(x => x.UserName == _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Name));
             
-            var users = await _userRepository.GetUsersAtEstablishment(currentUser.EstablishmentId.Value);
+            var users = await _userRepository.GetUsersAtEstablishment((int)currentUser.EstablishmentId);
             var usersDto = new List<AppUserDto>();
             foreach(var user in users)
             {
@@ -42,7 +45,7 @@ namespace API.Services
                 usersDto.Add(
                     new AppUserDto 
                     {
-                        Id = Guid.Parse(user.Id),
+                        Id = user.Id,
                         Username = user.UserName,
                         Email = user.Email,
                         IIN = user.IIN,
@@ -56,13 +59,20 @@ namespace API.Services
         public async Task<Result<AppUserDto>> GetUser(string id)
         {
             var user = await _userRepository.GetUser(id);
-
+            var establishment = await _establishmentRepository.GetEstablishment((int)user.EstablishmentId);
             var userDto = new AppUserDto
             {
-                Id = Guid.Parse(user.Id),
+                Id = user.Id,
                 Username = user.UserName,
                 Email = user.Email,
+                FirstName = user.FirstName,
+                SecondName = user.SecondName,
                 IIN = user.IIN,
+                EstablishmentId = (int)establishment.Id,
+                Establishment = establishment.Name,
+                Day = user.Birthdate.Day,
+                Month = user.Birthdate.Month,
+                Year = user.Birthdate.Year, 
                 Roles = await _userManager.GetRolesAsync(user)
             };
             return Result<AppUserDto>.Success(userDto);
@@ -81,7 +91,7 @@ namespace API.Services
                 SecondName = userDto.SecondName,
                 EstablishmentId = userDto.EstablishmentId,
                 IIN = userDto.IIN,
-                Birthdate = new DateTime(userDto.Year, userDto.Month, userDto.Day)
+                Birthdate = new DateTime((int)userDto.Year, (int)userDto.Month, (int)userDto.Day)
             };
 
             var result = await _userManager.CreateAsync(user, userDto.Password);
@@ -95,6 +105,36 @@ namespace API.Services
             } 
 
             return Result<RegisterDto>.Failure(new List<string>(){"Пользователь не создан"});
+        }
+
+        public async Task<Result<IEnumerable<AppUserDto>>> GetUsers()
+        {
+            var users = await _userRepository.GetUsers();
+            var usersDto = new List<AppUserDto>();
+            foreach(var user in users)
+            {
+                var roles = await _userManager.GetRolesAsync(user);
+                usersDto.Add(
+                    new AppUserDto 
+                    {
+                        Id = user.Id,
+                        Username = user.UserName,
+                        Email = user.Email,
+                        IIN = user.IIN,
+                        Roles = roles
+                    }
+                );
+            } 
+            return Result<IEnumerable<AppUserDto>>.Success(usersDto);
+        }
+
+        public async Task<Result<AppUserDto>> UpdateUser(AppUserDto dto)
+        {
+            return Result<AppUserDto>.Success(dto);
+            // var user = await _userRepository.GetUser(dto.Id);
+            // if(!String.IsNullOrEmpty(dto.Password)) {
+                
+            // }
         }
 
         private async Task<bool> ValidateUser(RegisterDto userDto)
@@ -122,11 +162,6 @@ namespace API.Services
             foreach(var err in _modelErrors) 
                 errors += err + "\n";
             return errors; 
-        }
-
-        Task<AppUserDto> IUserService.GetUser(string id)
-        {
-            throw new NotImplementedException();
         }
     }
 }

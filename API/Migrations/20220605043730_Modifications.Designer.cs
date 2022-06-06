@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220601165338_NormalizedNamesAddedToService")]
-    partial class NormalizedNamesAddedToService
+    [Migration("20220605043730_Modifications")]
+    partial class Modifications
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -220,6 +220,96 @@ namespace API.Migrations
                     b.HasIndex("ServiceId");
 
                     b.ToTable("EstablishmentService");
+                });
+
+            modelBuilder.Entity("API.Models.Estimate", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("text");
+
+                    b.Property<int>("EstablishmentId")
+                        .HasColumnType("integer");
+
+                    b.Property<double>("TotalSum")
+                        .HasColumnType("double precision");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("EstablishmentId");
+
+                    b.ToTable("Estimates");
+                });
+
+            modelBuilder.Entity("API.Models.EstimateProduct", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("EstimateId")
+                        .HasColumnType("integer");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("double precision");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("integer");
+
+                    b.Property<double>("TotalSum")
+                        .HasColumnType("double precision");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EstimateId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("EstimateProduct");
+                });
+
+            modelBuilder.Entity("API.Models.EstimateService", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("EstimateId")
+                        .HasColumnType("integer");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("double precision");
+
+                    b.Property<int>("ServiceId")
+                        .HasColumnType("integer");
+
+                    b.Property<double>("TotalSum")
+                        .HasColumnType("double precision");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EstimateId");
+
+                    b.HasIndex("ServiceId");
+
+                    b.ToTable("EstimateService");
                 });
 
             modelBuilder.Entity("API.Models.Manufacturer", b =>
@@ -509,6 +599,61 @@ namespace API.Migrations
                     b.Navigation("Service");
                 });
 
+            modelBuilder.Entity("API.Models.Estimate", b =>
+                {
+                    b.HasOne("API.Models.AppUser", "CreatedBy")
+                        .WithMany("Estimates")
+                        .HasForeignKey("CreatedById");
+
+                    b.HasOne("API.Models.Establishment", "Establishment")
+                        .WithMany("Estimates")
+                        .HasForeignKey("EstablishmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("Establishment");
+                });
+
+            modelBuilder.Entity("API.Models.EstimateProduct", b =>
+                {
+                    b.HasOne("API.Models.Estimate", "Estimate")
+                        .WithMany("Products")
+                        .HasForeignKey("EstimateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Estimate");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("API.Models.EstimateService", b =>
+                {
+                    b.HasOne("API.Models.Estimate", "Estimate")
+                        .WithMany("Services")
+                        .HasForeignKey("EstimateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.Models.Service", "Service")
+                        .WithMany()
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Estimate");
+
+                    b.Navigation("Service");
+                });
+
             modelBuilder.Entity("API.Models.Product", b =>
                 {
                     b.HasOne("API.Models.Manufacturer", "Manufacturer")
@@ -587,12 +732,26 @@ namespace API.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("API.Models.AppUser", b =>
+                {
+                    b.Navigation("Estimates");
+                });
+
             modelBuilder.Entity("API.Models.City", b =>
                 {
                     b.Navigation("Establishments");
                 });
 
             modelBuilder.Entity("API.Models.Establishment", b =>
+                {
+                    b.Navigation("Estimates");
+
+                    b.Navigation("Products");
+
+                    b.Navigation("Services");
+                });
+
+            modelBuilder.Entity("API.Models.Estimate", b =>
                 {
                     b.Navigation("Products");
 
