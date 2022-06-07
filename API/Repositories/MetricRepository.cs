@@ -22,5 +22,10 @@ namespace API.Repositories
         {
             return await _context.Metrics.Where(m => m.Id == id).FirstOrDefaultAsync();
         }
+
+        public async Task<Metric> GetMetricByName(string name)
+        {
+            return await _context.Metrics.Where(m => m.Name == name).FirstOrDefaultAsync();
+        }
     }
 }

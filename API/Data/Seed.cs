@@ -20,50 +20,36 @@ namespace API.Data
                     new Manufacturer
                     {
                         Name = "Coca-Cola Company",
-                        KzName = "Кока-Кола Компаниясы",
-                        RuName = "Компания Кока-Кола",
                         Description = "Coca-Cola"
                     },
                     new Manufacturer
                     {
                         Name = "Caspian Beverage Holding JSC",
-                        KzName = "АҚ Caspian Beverage Holding",
-                        RuName = "АО Caspian Beverage Holding",
                         Description = "Caspian Beverage Holding"
                     },
                     new Manufacturer
                     {
                         Name = "Shin Line LLP",
-                        KzName = "ЖШС Шин-Лайн",
-                        RuName = "ТОО Шин-Лайн",
                         Description = "Shin Line"
                     },
                     new Manufacturer
                     {
                         Name = "Rakhat JSC",
-                        KzName = "АҚ Рахат",
-                        RuName = "АО Рахат",
                         Description = "Rakhat"
                     },
                     new Manufacturer
                     {
                         Name = "Apple Inc",
-                        KzName = "Apple Қауымдастығы",
-                        RuName = "Корпорация Apple",
                         Description = "Apple"
                     },
                     new Manufacturer
                     {
                         Name = "Samsung Co",
-                        KzName = "Samsung Қауымдастығы",
-                        RuName = "Корпорация Samsung",
                         Description = "Samsung"
                     },
                     new Manufacturer
                     {
                         Name = "Dosfarm LLP",
-                        KzName = "Dosfarm ЖШС",
-                        RuName = "ТОО Dosfarm",
                         Description = "Dosfarm"
                     }
                 };

@@ -6,5 +6,6 @@ namespace API.Interfaces
     public interface IMetricRepository
     {
         Task<Metric> GetMetric(int id);
+        Task<Metric> GetMetricByName(string name);
     }
 }

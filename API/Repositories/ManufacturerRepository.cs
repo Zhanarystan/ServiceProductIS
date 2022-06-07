@@ -31,5 +31,30 @@ namespace API.Repositories
         {
             return await _context.Manufacturers.Where(m => m.Id == id).FirstOrDefaultAsync();
         }
+
+        public async Task<Manufacturer> GetManufacturerByName(string name)
+        {
+            return await _context.Manufacturers.Where(m => m.Name == name).FirstOrDefaultAsync();
+        }
+
+        public async Task<Manufacturer> CreateManufacturer(Manufacturer manufacturer)
+        {
+            await _context.Manufacturers.AddAsync(manufacturer);
+            await _context.SaveChangesAsync();
+            return manufacturer;
+        }
+
+        public async Task<int> RemoveManufacturer(Manufacturer manufacturer)
+        {
+            _context.Manufacturers.Remove(manufacturer);
+            return await _context.SaveChangesAsync();
+        }
+
+        public async Task<Manufacturer> UpdateManufacturer(Manufacturer manufacturer)
+        {
+            _context.Manufacturers.Update(manufacturer);
+            await _context.SaveChangesAsync();
+            return manufacturer;
+        }
     }
 }

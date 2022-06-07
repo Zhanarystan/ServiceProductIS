@@ -5,6 +5,7 @@ using API.Interfaces;
 using API.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 
 namespace API.Controllers
 {
@@ -56,6 +57,13 @@ namespace API.Controllers
         {
             var products = await _productRepository.GetProductsByNameMatching(queryString);
             return products;
+        }
+
+        [HttpPost("createFromCsv")]
+        [Authorize(Roles = "system_admin")]
+        public async Task<ActionResult<Result<IEnumerable<ProductDto>>>> CreateProductsFromCsv(IFormFile file)
+        {
+            return HandleResult(await _productService.CreateProductsFromCsv(file));
         }
     }
 }

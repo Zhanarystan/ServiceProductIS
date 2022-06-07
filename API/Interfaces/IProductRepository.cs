@@ -10,8 +10,10 @@ namespace API.Interfaces
         Task<IEnumerable<ProductDto>> GetProducts();
         Task<IEnumerable<ProductDto>> GetProductsByNameMatching(string queryString);
         Task<Product> CreateProduct(Product product);
+        Task<int> CreateProductList(List<Product> products);
         Task<Product> GetProduct(int id);
         Task<Product> UpdateProduct(Product product);
-        Task<int> RemoveProduct(int id);
+        Task<int> RemoveProduct(Product product);
+        Task<Product> GetProductByName(string name);
     }
 }

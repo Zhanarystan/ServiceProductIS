@@ -14,5 +14,6 @@ namespace API.Interfaces
         Task<Result<ProductDto>> GetProduct(int id);
         Task<Result<ProductDto>> UpdateProduct(int id, ProductDto dto);
         Task<Result<int>> RemoveProduct(int id);
+        Task<Result<IEnumerable<ProductDto>>> CreateProductsFromCsv(IFormFile file);
     }
 }

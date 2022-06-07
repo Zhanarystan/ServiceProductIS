@@ -61,9 +61,21 @@ namespace API.Repositories
             return product;
         }
 
-        public async Task<int> RemoveProduct(int id)
+        public async Task<int> RemoveProduct(Product product)
         {
-            _context.Product.Remove()
+            _context.Products.Remove(product);
+            return await _context.SaveChangesAsync();
+        }
+
+        public async Task<int> CreateProductList(List<Product> products)
+        {
+            _context.Products.AddRange(products);
+            return await _context.SaveChangesAsync();
+        }
+
+        public async Task<Product> GetProductByName(string name)
+        {
+            return await _context.Products.Where(p => p.Name == name).FirstOrDefaultAsync();
         }
     }
 }

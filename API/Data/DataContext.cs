@@ -53,32 +53,38 @@ namespace API.Data
             builder.Entity<EstablishmentProduct>()
                 .HasOne(u => u.Establishment)
                 .WithMany(a => a.Products)
-                .HasForeignKey(ep => ep.EstablishmentId);
+                .HasForeignKey(ep => ep.EstablishmentId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<EstablishmentProduct>()
                 .HasOne(u => u.Product)
                 .WithMany(a => a.Establishments)
-                .HasForeignKey(ep => ep.ProductId);
+                .HasForeignKey(ep => ep.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
             
             builder.Entity<EstablishmentService>()
                 .HasOne(u => u.Establishment)
                 .WithMany(a => a.Services)
-                .HasForeignKey(ep => ep.EstablishmentId);
+                .HasForeignKey(ep => ep.EstablishmentId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<EstablishmentService>()
                 .HasOne(u => u.Service)
                 .WithMany(a => a.Establishments)
-                .HasForeignKey(ep => ep.ServiceId);
+                .HasForeignKey(ep => ep.ServiceId)
+                .OnDelete(DeleteBehavior.Cascade);
             
             builder.Entity<EstimateProduct>()
                 .HasOne(u => u.Estimate)
                 .WithMany(a => a.Products)
-                .HasForeignKey(ep => ep.EstimateId);
+                .HasForeignKey(ep => ep.EstimateId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<EstimateService>()
                 .HasOne(u => u.Estimate)
                 .WithMany(a => a.Services)
-                .HasForeignKey(ep => ep.EstimateId);
+                .HasForeignKey(ep => ep.EstimateId)
+                .OnDelete(DeleteBehavior.Cascade);
             
             builder.Entity<Estimate>() 
                 .HasOne(u => u.Establishment)

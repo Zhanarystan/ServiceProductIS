@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
+using System.IO;
 
 
 namespace API.Services
@@ -90,7 +91,44 @@ namespace API.Services
         public async Task<Result<int>> RemoveProduct(int id)
         {
             var product = await _productRepository.GetProduct(id);
-            await _productRepository.RemoveProduct(product);
+            return Result<int>.Success(await _productRepository.RemoveProduct(product));
+        }
+
+        public async Task<Result<IEnumerable<ProductDto>>> CreateProductsFromCsv(IFormFile file)
+        {
+            var productList = new List<Product>();
+            if(file.Length > 0)
+            {
+                await using var stream = file.OpenReadStream();
+                var reader = new StreamReader(stream);
+                while(!reader.EndOfStream)
+                {
+                    var line = reader.ReadLine();
+                    var values = line.Split(',');
+                    if(values[0] == "name" || String.IsNullOrEmpty(values[0])) continue;
+                    if(await _productRepository.GetProductByName(values[0]) != null) continue;
+                    var product = new Product();
+                    product.Name = values[0];
+                    product.BarCode = values[1];
+                    if(!String.IsNullOrEmpty(values[2]))
+                    {
+                        var manufacturer = await _manufacturerRepository.GetManufacturerByName(values[2]);
+                        if(manufacturer != null)
+                            product.ManufacturerId = manufacturer.Id;
+                    }
+                    if(!String.IsNullOrEmpty(values[3]))
+                    {
+                        var metric = await _metricRepository.GetMetricByName(values[3]);
+                        if(metric != null) 
+                            product.MetricId = metric.Id;
+                    }
+                    productList.Add(product);
+                }
+            }
+            if(await _productRepository.CreateProductList(productList) > 0)
+                return Result<IEnumerable<ProductDto>>.Success(await _productRepository.GetProducts());
+            
+            return Result<IEnumerable<ProductDto>>.Failure(new List<string>() {"Продукты не созданы"});
         }
     }
 }

@@ -8,5 +8,9 @@ namespace API.Interfaces
     {
         Task<IEnumerable<Manufacturer>> GetManufacturers();
         Task<Manufacturer> GetManufacturer(int id);
+        Task<Manufacturer> CreateManufacturer(Manufacturer manufacturer);
+        Task<int> RemoveManufacturer(Manufacturer manufacturer);
+        Task<Manufacturer> GetManufacturerByName(string name);
+        Task<Manufacturer> UpdateManufacturer(Manufacturer manufacturer);
     }
 }
