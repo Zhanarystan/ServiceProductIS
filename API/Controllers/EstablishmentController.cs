@@ -4,9 +4,11 @@ using API.DTOs;
 using API.Interfaces;
 using API.Models;
 using API.Core;
+using API.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using API.DTOs;
 
 namespace API.Controllers
 {
@@ -14,10 +16,12 @@ namespace API.Controllers
     public class EstablishmentController : BaseApiController
     {
         private readonly IEstablishmentService _establishmentService;
+        private readonly DataContext _context;
         
-        public EstablishmentController(IEstablishmentService establishmentService)
+        public EstablishmentController(IEstablishmentService establishmentService, DataContext context)
         {
             _establishmentService = establishmentService;
+            _context = context;
         }
 
         [AllowAnonymous]
@@ -72,6 +76,27 @@ namespace API.Controllers
         public async Task<ActionResult<EstablishmentCreateDto>> UpdateEstablishment(int id, EstablishmentCreateDto establishment) 
         {
             return HandleResult(await _establishmentService.UpdateEstablishment(id, establishment));
+        }
+
+        [HttpPost("createEstablishmentProducts")]
+        public async Task<ActionResult<int>> CreateEstablishmentProducts(List<EstablishmentProductCreateDto> list)
+        {
+            var eps = new List<EstablishmentProduct>();
+            foreach(var l in list)
+            {
+                eps.Add
+                (
+                    new EstablishmentProduct
+                    {
+                        ProductId = l.ProductId,
+                        EstablishmentId = l.EstablishmentId,
+                        Price = l.Price,
+                        Amount = l.Amount
+                    }
+                );
+            }
+            _context.EstablishmentProduct.AddRange(eps);
+            return await _context.SaveChangesAsync(); 
         }
     }
 }
