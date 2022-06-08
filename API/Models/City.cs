@@ -11,4 +11,4 @@ namespace API.Models
         public double Latitude { get; set; }
         public ICollection<Establishment> Establishments { get; set; } = new List<Establishment>();
     }
-}
+} 

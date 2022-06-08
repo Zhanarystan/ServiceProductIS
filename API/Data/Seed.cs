@@ -60,15 +60,11 @@ namespace API.Data
                 {
                     new Metric 
                     {
-                        Name = "тг/шт",
-                        KzName = "тг/дана",
-                        RuName = "тг/шт"
+                        Name = "тг/шт"
                     },
-                    new Metric
+                    new Metric  
                     {
-                        Name = "тг/кг",
-                        KzName = "тг/кг",
-                        RuName = "тг/кг"
+                        Name = "тг/кг"
                     }
                 };
                 

@@ -57,7 +57,9 @@ namespace API.Extensions
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IEstimateService, EstimateService>();
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IServiceService, ServiceService>();
             services.AddScoped<IManufacturerService, ManufacturerService>();
+            services.AddScoped<IMetricService, MetricService>();
 
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
             services.Configure<CloudinarySettings>(config.GetSection("Cloudinary"));

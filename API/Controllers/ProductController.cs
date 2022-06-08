@@ -21,7 +21,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "system_admin")]
+        [Authorize(Roles = "system_admin,establishment_admin")]
         public async Task<ActionResult<IEnumerable<ProductDto>>> GetProducts()
         {
             return HandleResult(await _productService.GetProducts());
@@ -41,12 +41,14 @@ namespace API.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "system_admin")]
         public async Task<ActionResult<Result<ProductDto>>> UpdateProduct(int id, ProductDto dto)
         {  
             return HandleResult(await _productService.UpdateProduct(id, dto));
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "system_admin")]
         public async Task<ActionResult<Result<int>>> DeleteProduct(int id)
         {
             return HandleResult(await _productService.RemoveProduct(id));

@@ -14,18 +14,44 @@ namespace API.Controllers
     [AllowAnonymous]
     public class MetricController : BaseApiController
     {
-        private readonly DataContext _context;
+        private readonly IMetricService _metricService;
         
-        public MetricController(DataContext context)
+        public MetricController(IMetricService metricService)
         {
-            _context = context;
+            _metricService = metricService;
         }
 
         [HttpGet]
         public async Task<ActionResult<Result<IEnumerable<Metric>>>> GetMetrics()
         {
-            var metrics = await _context.Metrics.ToListAsync();
-            return HandleResult(Result<IEnumerable<Metric>>.Success(metrics));
+            return HandleResult(await _metricService.GetMetrics());
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Result<IEnumerable<Metric>>>> GetMetric(int id)
+        {
+            return HandleResult(await _metricService.GetMetric(id));
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "system_admin")]
+        public async Task<ActionResult<Result<Metric>>> CreateMetric(MetricCreateDto dto)
+        {
+            return HandleResult(await _metricService.CreateMetric(dto));
+        }
+
+        [HttpPut("{id}")]
+        [Authorize(Roles = "system_admin")]
+        public async Task<ActionResult<Result<Metric>>> UpdateMetric(int id, MetricCreateDto dto)
+        {
+            return HandleResult(await _metricService.UpdateMetric(id, dto));
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "system_admin")]
+        public async Task<ActionResult<Result<int>>> DeleteMetric(int id)
+        {
+            return HandleResult(await _metricService.RemoveMetric(id));
         }
     }
 }

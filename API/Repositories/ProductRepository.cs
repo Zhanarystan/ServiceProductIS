@@ -44,6 +44,7 @@ namespace API.Repositories
 
         public async Task<Product> CreateProduct(Product product)
         {
+            product.NormalizeName();
             await _context.Products.AddAsync(product);
             await _context.SaveChangesAsync();
             return product;
@@ -56,6 +57,7 @@ namespace API.Repositories
 
         public async Task<Product> UpdateProduct(Product product)
         {
+            product.NormalizeName();
             _context.Products.Update(product);
             await _context.SaveChangesAsync();
             return product;
@@ -68,7 +70,9 @@ namespace API.Repositories
         }
 
         public async Task<int> CreateProductList(List<Product> products)
-        {
+        {   
+            foreach (var p in products)
+                p.NormalizeName();
             _context.Products.AddRange(products);
             return await _context.SaveChangesAsync();
         }

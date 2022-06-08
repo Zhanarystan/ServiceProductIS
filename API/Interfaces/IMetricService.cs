@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using API.Models;
 using API.Core;
 using API.DTOs;
+using System.Collections.Generic;
 
 namespace API.Interfaces
 {

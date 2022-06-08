@@ -113,14 +113,16 @@ namespace API.Services
                     if(!String.IsNullOrEmpty(values[2]))
                     {
                         var manufacturer = await _manufacturerRepository.GetManufacturerByName(values[2]);
-                        if(manufacturer != null)
-                            product.ManufacturerId = manufacturer.Id;
+                        if(manufacturer == null)
+                            return Result<IEnumerable<ProductDto>>.Failure(new List<string>() {"Продукты не созданы"});
+                        product.ManufacturerId = manufacturer.Id;
                     }
                     if(!String.IsNullOrEmpty(values[3]))
                     {
                         var metric = await _metricRepository.GetMetricByName(values[3]);
-                        if(metric != null) 
-                            product.MetricId = metric.Id;
+                        if(metric == null) 
+                            return Result<IEnumerable<ProductDto>>.Failure(new List<string>() {"Продукты не созданы"});
+                        product.MetricId = metric.Id;
                     }
                     productList.Add(product);
                 }
