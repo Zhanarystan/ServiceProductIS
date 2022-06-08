@@ -129,6 +129,11 @@ namespace API.Services
             return Result<EstablishmentCreateDto>.Success(dto);
         }
 
+        public async Task<Result<int>> CreateEstablishmentProductList(List<EstablishmentProductCreateDto> list)
+        {
+            return Result<int>.Success(1);
+        }
+
         public bool ValidateEstablishment(EstablishmentCreateDto dto) 
         {
             if(String.IsNullOrEmpty(dto.Name))

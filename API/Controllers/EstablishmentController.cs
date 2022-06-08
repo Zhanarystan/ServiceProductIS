@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
+    [AllowAnonymous]
     public class EstablishmentController : BaseApiController
     {
         private readonly IEstablishmentService _establishmentService;
@@ -52,6 +53,7 @@ namespace API.Controllers
             return HandleResult(await _establishmentService.UpdateProduct(productDto));
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ActionResult<EstablishmentDto>> GetEstablishment(int id)
         {

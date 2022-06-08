@@ -16,5 +16,6 @@ namespace API.Interfaces
         Task<bool> UpdateEstablishment(Establishment establishment);
         Task<bool> UpdateProduct(EstablishmentProduct product);
         Task<EstablishmentProduct> GetEstablishmentProduct(int productId, int establishmentId);
+        Task<int> CreateEstablishmentProductList(List<EstablishmentProduct> list);
     }
 }

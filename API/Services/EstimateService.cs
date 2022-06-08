@@ -68,7 +68,8 @@ namespace API.Services
             foreach (var p in list)
             {
                 var ep = await _establishmentRepository.GetEstablishmentProduct(p.ProductId, estimate.EstablishmentId);
-                ep.Amount -= p.Amount;
+                if(p.Metric == "тг/шт")
+                    ep.Amount -= p.Amount;
                 await _establishmentRepository.UpdateProduct(ep);
                 products.Add(                                                                                                                                                                                                                                                                               
                     new EstimateProduct

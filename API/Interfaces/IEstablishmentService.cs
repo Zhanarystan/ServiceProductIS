@@ -16,5 +16,6 @@ namespace API.Interfaces
         Task<Result<EstablishmentProductDto>> UpdateProduct(EstablishmentProductDto productDto);
         Task<Result<EstablishmentDto>> UpdatePhoto(int establishmentId, IFormFile file);
         Task<Result<EstablishmentCreateDto>> UpdateEstablishment(int id, EstablishmentCreateDto dto);
+        Task<Result<int>> CreateEstablishmentProductList(List<EstablishmentProductCreateDto> list);
     }
 }

@@ -81,5 +81,11 @@ namespace API.Repositories
             _context.Establishments.Update(establishment);
             return await _context.SaveChangesAsync() > 0;
         }
+
+        public async Task<int> CreateEstablishmentProductList(List<EstablishmentProduct> list)
+        {
+            _context.EstablishmentProduct.AddRange(list);
+            return await _context.SaveChangesAsync();
+        }
     }
 }
