@@ -22,7 +22,8 @@ namespace API.Core
                 .ForMember(d => d.Price, o => o.MapFrom(s => s.Price))
                 .ForMember(d => d.Amount, o => o.MapFrom(s => s.Amount))
                 .ForMember(d => d.Metric, o => o.MapFrom(s => s.Product.Metric.Name))
-                .ForMember(d => d.ProductBarCode, o => o.MapFrom(s => s.Product.BarCode));
+                .ForMember(d => d.ProductBarCode, o => o.MapFrom(s => s.Product.BarCode))
+                .ForMember(d => d.PhotoUrl, o => o.MapFrom(s => s.Establishment.PhotoUrl));
 
             CreateMap<EstablishmentService, EstablishmentServiceDto>()
                 .ForMember(d => d.Id, o => o.MapFrom(s => s.Id))
