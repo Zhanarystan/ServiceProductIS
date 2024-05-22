@@ -58,3 +58,13 @@
 /home/zhanarystan/ServiceProductIS/API/bin/Debug/net5.0/CloudinaryDotNet.dll
 /home/zhanarystan/ServiceProductIS/API/bin/Debug/net5.0/Microsoft.Extensions.WebEncoders.dll
 /home/zhanarystan/ServiceProductIS/API/bin/Debug/net5.0/Newtonsoft.Json.dll
+C:\Users\mukht\source\repos\ServiceProductIS\API\obj\Debug\net5.0\API.csproj.AssemblyReference.cache
+C:\Users\mukht\source\repos\ServiceProductIS\API\obj\Debug\net5.0\API.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\mukht\source\repos\ServiceProductIS\API\obj\Debug\net5.0\API.AssemblyInfoInputs.cache
+C:\Users\mukht\source\repos\ServiceProductIS\API\obj\Debug\net5.0\API.AssemblyInfo.cs
+C:\Users\mukht\source\repos\ServiceProductIS\API\obj\Debug\net5.0\API.csproj.CoreCompileInputs.cache
+C:\Users\mukht\source\repos\ServiceProductIS\API\obj\Debug\net5.0\API.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\mukht\source\repos\ServiceProductIS\API\obj\Debug\net5.0\API.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\mukht\source\repos\ServiceProductIS\API\obj\Debug\net5.0\API.sourcelink.json
+C:\Users\mukht\source\repos\ServiceProductIS\API\obj\Debug\net5.0\API.dll
+C:\Users\mukht\source\repos\ServiceProductIS\API\obj\Debug\net5.0\API.pdb

@@ -98,5 +98,12 @@ namespace API.Controllers
             _context.EstablishmentProduct.AddRange(eps);
             return await _context.SaveChangesAsync(); 
         }
+
+        // [AllowAnonymous]
+        // [HttpPost("GenerateEsimates")]
+        // public async Task<ActionResult<IEnumerable<EstablishmentService>>> GetEstablishmentsByService(int serviceId, double lat, double lon)
+        // {
+        //     return HandleResult(await _establishmentService.GetEstablishmentsByService(serviceId, lat, lon));
+        // }
     }
 }

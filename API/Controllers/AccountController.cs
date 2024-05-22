@@ -1,3 +1,4 @@
+using System;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -39,11 +40,18 @@ namespace API.Controllers
         {
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == loginDto.Username);
 
-            if(user == null) return Unauthorized();
+            if (user == null) return Unauthorized();
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
 
-            if(result.Succeeded) return await CreateUserObject(user);
+            if (result.Succeeded) 
+            {
+                var userObject = await CreateUserObject(user);
+                Console.WriteLine(userObject.Username + " " + userObject.Token);
+                foreach (var r in userObject.Roles)
+                    Console.WriteLine(r);
+                return userObject;
+            }
 
             return Unauthorized();
         }

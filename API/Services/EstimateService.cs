@@ -40,14 +40,14 @@ namespace API.Services
             var estimate = new Estimate
             {
                 TotalSum = dto.TotalSum,
-                CreatedById = user.Id,
+                CreatedById = dto.CreatedById,
                 EstablishmentId = dto.EstablishmentId, 
-                CreatedAt = DateTime.Now
+                CreatedAt = dto.CreatedAt
             };
             estimate = await _repository.CreateEstimate(estimate);
             bool productsCreated = false;
             bool servicesCreated = false;
-
+    
             if(dto.Products.Count > 0) 
             {
                 var products = await BuildEstimateProductList(dto.Products, estimate);
