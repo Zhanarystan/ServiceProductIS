@@ -12,25 +12,21 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using System.IO;
-
 namespace API.Services
 {
     public class ServiceService : IServiceService
     {
         private readonly IServiceRepository _serviceRepository;
         private readonly IMetricRepository _metricRepository;
-
         public ServiceService(IServiceRepository serviceRepository, IMetricRepository metricRepository)
         {
             _serviceRepository = serviceRepository;
             _metricRepository = metricRepository;
         }
-
         public async Task<Result<IEnumerable<ServiceDto>>> GetServices()
         {
             return Result<IEnumerable<ServiceDto>>.Success(await _serviceRepository.GetServices());
         }
-
         public async Task<Result<ServiceCreateDto>> CreateService(ServiceCreateDto dto)
         {
             var service = new Service
@@ -42,7 +38,6 @@ namespace API.Services
             service = await _serviceRepository.CreateService(service);
             return Result<ServiceCreateDto>.Success(dto);
         }
-
         public async Task<Result<ServiceDto>> GetService(int id)
         {
             var service = await _serviceRepository.GetService(id);
@@ -57,7 +52,6 @@ namespace API.Services
             };
             return Result<ServiceDto>.Success(dto);
         }
-
         public async Task<Result<ServiceDto>> UpdateService(int id, ServiceDto dto)
         {
             var service = await _serviceRepository.GetService(id);
@@ -67,13 +61,11 @@ namespace API.Services
             await _serviceRepository.UpdateService(service);
             return Result<ServiceDto>.Success(dto);
         }
-
         public async Task<Result<int>> RemoveService(int id)
         {
             var service = await _serviceRepository.GetService(id);
             return Result<int>.Success(await _serviceRepository.RemoveService(service));
         }
-
         public async Task<Result<IEnumerable<ServiceDto>>> CreateServicesFromCsv(IFormFile file)
         {
             var serviceList = new List<Service>();
@@ -101,9 +93,7 @@ namespace API.Services
             }
             if(await _serviceRepository.CreateServiceList(serviceList) > 0)
                 return Result<IEnumerable<ServiceDto>>.Success(await _serviceRepository.GetServices());
-            
             return Result<IEnumerable<ServiceDto>>.Failure(new List<string>() {"Сервисы не созданы"});
         }
-
     }
 }

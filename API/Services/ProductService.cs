@@ -12,8 +12,6 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using System.IO;
-
-
 namespace API.Services
 {
     public class ProductService : IProductService
@@ -21,8 +19,6 @@ namespace API.Services
         private readonly IProductRepository _productRepository;
         private readonly IManufacturerRepository _manufacturerRepository;
         private readonly IMetricRepository _metricRepository;
-        
-        
         public ProductService
         (
             IProductRepository productRepository, 
@@ -34,12 +30,10 @@ namespace API.Services
             _manufacturerRepository = manufacturerRepository;
             _metricRepository = MetricRepository;
         }
-        
         public async Task<Result<IEnumerable<ProductDto>>> GetProducts() 
         {
             return Result<IEnumerable<ProductDto>>.Success(await _productRepository.GetProducts());
         }
-
         public async Task<Result<ProductCreateDto>> CreateProduct(ProductCreateDto dto)
         {
             var product = new Product
@@ -54,7 +48,6 @@ namespace API.Services
             product = await _productRepository.CreateProduct(product);
             return Result<ProductCreateDto>.Success(dto);
         }
-
         public async Task<Result<ProductDto>> GetProduct(int id)
         {
             var product = await _productRepository.GetProduct(id);
@@ -74,7 +67,6 @@ namespace API.Services
             };
             return Result<ProductDto>.Success(dto);
         }
-
         public async Task<Result<ProductDto>> UpdateProduct(int id, ProductDto dto)
         {
             var product = await _productRepository.GetProduct(id);
@@ -87,13 +79,11 @@ namespace API.Services
             await _productRepository.UpdateProduct(product);
             return Result<ProductDto>.Success(dto);
         }
-
         public async Task<Result<int>> RemoveProduct(int id)
         {
             var product = await _productRepository.GetProduct(id);
             return Result<int>.Success(await _productRepository.RemoveProduct(product));
         }
-
         public async Task<Result<IEnumerable<ProductDto>>> CreateProductsFromCsv(IFormFile file)
         {
             var productList = new List<Product>();
@@ -129,7 +119,6 @@ namespace API.Services
             }
             if(await _productRepository.CreateProductList(productList) > 0)
                 return Result<IEnumerable<ProductDto>>.Success(await _productRepository.GetProducts());
-            
             return Result<IEnumerable<ProductDto>>.Failure(new List<string>() {"Продукты не созданы"});
         }
     }

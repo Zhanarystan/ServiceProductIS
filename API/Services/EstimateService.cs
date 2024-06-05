@@ -11,19 +11,15 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
-
 namespace API.Services
 {
     public class EstimateService : IEstimateService
     {
-
         private readonly UserManager<AppUser> _userManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IEstimateRepository _repository;
         private readonly IEstablishmentRepository _establishmentRepository;
         private readonly IList<string> _modelErrors;
-
-
         public EstimateService(IEstimateRepository repository, IEstablishmentRepository establishmentRepository, 
             UserManager<AppUser> userManager, IHttpContextAccessor httpContextAccessor)
         {
@@ -33,7 +29,6 @@ namespace API.Services
             _httpContextAccessor = httpContextAccessor;
             _modelErrors = new List<string>();
         }
-
         public async Task<Result<EstimateDto>> CreateEstimate(EstimateCreateDto dto)
         {
             var user = await GetCurrentUser();
@@ -45,30 +40,25 @@ namespace API.Services
                 CreatedAt = dto.CreatedAt
             };
             estimate = await _repository.CreateEstimate(estimate);
-            bool productsCreated = false;
-            bool servicesCreated = false;
-    
-            if(dto.Products.Count > 0) 
+            if (dto.Products.Count > 0) 
             {
                 var products = await BuildEstimateProductList(dto.Products, estimate);
-                productsCreated = await _repository.CreateEstimateProductList(products);
+                await _repository.CreateEstimateProductList(products);
             }
-            if(dto.Services.Count > 0) 
+            if (dto.Services.Count > 0) 
             {
                 var services = BuildEstimateServiceList(dto.Services, estimate);
-                servicesCreated = await _repository.CreateEstimateServiceList(services);
+                await _repository.CreateEstimateServiceList(services);
             }
-                
             return Result<EstimateDto>.Success(BuildEstimateDto(dto, estimate.Id));
         }
-
         private async Task<List<EstimateProduct>> BuildEstimateProductList(ICollection<EstimateProductCreateDto> list, Estimate estimate) 
         {
             var products = new List<EstimateProduct>();
             foreach (var p in list)
             {
                 var ep = await _establishmentRepository.GetEstablishmentProduct(p.ProductId, estimate.EstablishmentId);
-                if(p.Metric == "тг/шт")
+                if (p.Metric == "тг/шт")
                     ep.Amount -= p.Amount;
                 await _establishmentRepository.UpdateProduct(ep);
                 products.Add(                                                                                                                                                                                                                                                                               
@@ -84,7 +74,6 @@ namespace API.Services
             }
             return products;
         }
-
         private List<API.Models.EstimateService> BuildEstimateServiceList(ICollection<EstimateServiceCreateDto> list, Estimate estimate)
         {
             var services = new List<API.Models.EstimateService>();
@@ -103,7 +92,6 @@ namespace API.Services
             }
             return services;
         }
-
         private EstimateDto BuildEstimateDto(EstimateCreateDto createDto, int estimateId)
         {
             return new EstimateDto
@@ -114,7 +102,6 @@ namespace API.Services
                 EstablishmentId = createDto.EstablishmentId,
             };
         }
-
         private async Task<AppUser> GetCurrentUser()
         {
             return await _userManager.Users

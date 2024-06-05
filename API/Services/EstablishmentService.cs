@@ -8,7 +8,6 @@ using API.Core;
 using API.Models;
 using API.Photos;
 using Microsoft.AspNetCore.Http;
-
 namespace API.Services
 {
     public class EstablishmentService : IEstablishmentService
@@ -22,17 +21,14 @@ namespace API.Services
             _photoAccessor = photoAccessor;
             _modelErrors = new List<string>();
         }
-        
         public async Task<IEnumerable<EstablishmentListDto>> GetEstablishments() 
         {
             return await _repository.GetEstablishments();
         }
-
         public async Task<EstablishmentDto> GetEstablishment(int id)
         {
             return await _repository.GetEstablishmentDto(id);
         }
-
         public async Task<bool> CreateEstablishment(EstablishmentCreateDto establishment)
         {
             var newEstablishment = new Establishment
@@ -47,10 +43,8 @@ namespace API.Services
                 IsOpen = false,
                 CityId = establishment.CityId
             };
-
             return await _repository.CreateEstablishment(newEstablishment);
         }
-        
         public async Task<Result<IEnumerable<EstablishmentProductDto>>> GetEstablishmentsByProduct(int productId, double userLat, double userLon)
         {
             var establishments = await _repository.GetEstablishmentsByProduct(productId);
@@ -60,10 +54,8 @@ namespace API.Services
                 es.Distance = DistanceTo(es.Latitude, es.Longitude, userLat, userLon);
                 establishmentsList.Add(es);
             }
-
             return Result<IEnumerable<EstablishmentProductDto>>.Success(establishmentsList.OrderBy(es => es.Distance).ToList());
         }
-
         public async Task<Result<IEnumerable<EstablishmentServiceDto>>> GetEstablishmentsByService(int serviceId, double userLat, double userLon)
         {
             var establishments = await _repository.GetEstablishmentsByService(serviceId);
@@ -73,10 +65,8 @@ namespace API.Services
                 es.Distance = DistanceTo(es.Latitude, es.Longitude, userLat, userLon);
                 establishmentsList.Add(es);
             }
-
             return Result<IEnumerable<EstablishmentServiceDto>>.Success(establishmentsList.OrderBy(es => es.Distance).ToList());
         }
-
         public async Task<Result<EstablishmentProductDto>> UpdateProduct(EstablishmentProductDto productDto)
         {
             var product = await _repository.GetEstablishmentProduct(productDto.ProductId, productDto.EstablishmentId);
@@ -86,31 +76,23 @@ namespace API.Services
                 return Result<EstablishmentProductDto>.Failure(new List<string>() {"Продукт по id: " + productDto.ProductId + " не обновлено!"});
             return Result<EstablishmentProductDto>.Success(productDto);
         }
-
         public async Task<Result<EstablishmentDto>> UpdatePhoto(int establishmentId, IFormFile file)
         {
             var establishment = await _repository.GetEstablishment(establishmentId);
-
             string deletionConfirmation = "ok";
             if(establishment.PhotoPublicId != null || establishment.PhotoUrl != null )
                 deletionConfirmation = await _photoAccessor.DeletePhoto(establishment.PhotoPublicId);
-            
             if(deletionConfirmation == null)
                 return Result<EstablishmentDto>.Failure(new List<string>() {"Фото заведении не изменено!"});
-            
             var photoUploadResult = await _photoAccessor.AddPhoto(file);
             establishment.PhotoPublicId = photoUploadResult.PublicId;
             establishment.PhotoUrl = photoUploadResult.Url;
-
             if(! await _repository.UpdateEstablishment(establishment))
                 return Result<EstablishmentDto>.Failure(new List<string>() {"Фото заведении не изменено!"});
-
             var establishmentDto = await _repository.GetEstablishmentDto(establishmentId);
             establishmentDto.PhotoUrl = establishment.PhotoUrl;
-
             return Result<EstablishmentDto>.Success(establishmentDto);
         }
-
         public async Task<Result<EstablishmentCreateDto>> UpdateEstablishment(int id, EstablishmentCreateDto dto)
         {
             var establishment = await _repository.GetEstablishment(id);
@@ -123,17 +105,14 @@ namespace API.Services
             establishment.StartWorkingTime = dto.StartWorkingTime;
             establishment.EndWorkingTime = dto.EndWorkingTime;
             establishment.Address = dto.Address;
-
             if(! await _repository.UpdateEstablishment(establishment))
                 return Result<EstablishmentCreateDto>.Failure(new List<string>() {"Заведение не изменено!"});
             return Result<EstablishmentCreateDto>.Success(dto);
         }
-
         public async Task<Result<int>> CreateEstablishmentProductList(List<EstablishmentProductCreateDto> list)
         {
             return Result<int>.Success(1);
         }
-
         public bool ValidateEstablishment(EstablishmentCreateDto dto) 
         {
             if(String.IsNullOrEmpty(dto.Name))
@@ -144,7 +123,6 @@ namespace API.Services
                 _modelErrors.Add("Номер банковской карты должeн содержать 16 цифр");
             return _modelErrors.Count == 0;
         }
-
         private double DistanceTo(double lat1, double lon1, double lat2, double lon2) 
         {
             double rlat1 = Math.PI * lat1 / 180;

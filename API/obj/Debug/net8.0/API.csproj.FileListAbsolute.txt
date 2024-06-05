@@ -83,3 +83,4 @@ C:\Users\mukht\source\repos\ServiceProductIS\api\bin\Debug\net8.0\selenium-manag
 C:\Users\mukht\source\repos\ServiceProductIS\api\bin\Debug\net8.0\selenium-manager\macos\selenium-manager
 C:\Users\mukht\source\repos\ServiceProductIS\api\bin\Debug\net8.0\selenium-manager\windows\selenium-manager.exe
 C:\Users\mukht\source\repos\ServiceProductIS\api\bin\Debug\net8.0\WebDriver.dll
+C:\Users\mukht\source\repos\ServiceProductIS\API\bin\Debug\net8.0\Extreme.Numerics.dll
